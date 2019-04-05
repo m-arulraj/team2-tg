@@ -1,3 +1,10 @@
+# Eclipse file
+.settings
+.project
+.metadata
+.classpath
+/target/
+
 # Compiled class file
 *.class
 
