@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Implementation-Title: userService
+Implementation-Title: user-service
 Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: varikutihs
 Implementation-Vendor-Id: com.virtusa.sportsManagementSystem
