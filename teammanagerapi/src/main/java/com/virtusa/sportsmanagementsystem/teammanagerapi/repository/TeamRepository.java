@@ -20,5 +20,8 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
 	@Query("select t from Team t where t.teamName=:teamName")
 	Team getTeam(@Param("teamName") String teamName);
 	
+	@Query("select t from Team t where t.contestId=:contestId")
+	List<Team> getListOfTeamsbasedonContestId(@Param("contestId") int contestId);
+	
 	
 }

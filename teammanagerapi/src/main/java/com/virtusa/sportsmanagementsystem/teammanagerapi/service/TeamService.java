@@ -44,4 +44,8 @@ public class TeamService {
 		System.out.println(player.getTeam());
 		return player.getTeam();
 	}
+	public List<Team> getteamlistBasedOnContestId(int contestId) {
+		return teamRepository.getListOfTeamsbasedonContestId(contestId);
+	}
+
 }

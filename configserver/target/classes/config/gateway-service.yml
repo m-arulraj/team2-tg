@@ -17,6 +17,11 @@ spring:
         locator:
           enabled: true
       routes:
+      - id: contestowner-service
+        uri: lb://contestowner-service
+        predicates:
+        - Path= /api/contest/**,/api/schedule/**
+        
       - id: user-service
         uri: lb://user-service
         predicates:
@@ -26,5 +31,10 @@ spring:
         uri: lb://teamManagement-service
         predicates:
         - Path= /api/team/**
+        
+      - id: scoreboard-service
+        uri: lb://scoreboard-service
+        predicates:
+        - Path= /api/scoreboard/matchscore/**
         
       

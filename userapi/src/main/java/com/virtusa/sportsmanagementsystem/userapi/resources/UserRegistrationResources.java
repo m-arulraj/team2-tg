@@ -31,7 +31,7 @@ public class UserRegistrationResources {
 	private static  Logger logger = Logger.getLogger(UserRegistrationResources.class);
 	
 	@PostMapping(value="")
-	public ResponseEntity<?> registeruser(@Valid@RequestBody UserRole userRoles,BindingResult bindingResult) throws URISyntaxException{	
+	public ResponseEntity<?> registeruser(@Valid@RequestBody UserRole userRole,BindingResult bindingResult) throws URISyntaxException{	
 		logger.info("userRegistration controller is started");
 		logger.debug("registerUser controller is invoked");
 		System.out.println(bindingResult.getErrorCount()+"errors");
@@ -40,9 +40,9 @@ public class UserRegistrationResources {
 			return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(bindingResult.getAllErrors());
 		}
 		else {
-		User user= userService.registerUser(userRoles);	
+		UserRole user1= userService.registerUser(userRole);	
 		
-		return user.getId()==0? new ResponseEntity<>("User with that role is already registered",HttpStatus.CONFLICT):new ResponseEntity<User>(user,HttpStatus.CREATED);
+		return new ResponseEntity<UserRole>(user1,HttpStatus.CREATED);
 		}
 	}
 	@DeleteMapping(value ="")	

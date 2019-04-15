@@ -32,7 +32,7 @@ public class ClientControler {
 		return "home";
 	}
 	
-	@GetMapping(value="/registration")
+	@GetMapping(value="/register")
 	public String getRegistration() {
 		return "registration";
 	}
@@ -60,7 +60,7 @@ public class ClientControler {
 		return "contest";
 	}
 	@GetMapping(value="/contest/team")
-	public String getTeamProfile(@RequestParam("cId")long cId,@RequestParam("tId")long tId) {
+	public String getTeamProfile(/* @RequestParam("cId")long cId,@RequestParam("tId")long tId */) {
 		return "teamProfile";
 	}
 	

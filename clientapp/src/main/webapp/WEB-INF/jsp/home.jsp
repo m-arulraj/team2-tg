@@ -78,6 +78,8 @@
 	<a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Photos</a>
 	<a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">More</a>
 	<a href="/login" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Log In</a>
+	<a href="/register" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Sign Up</a>
+	
   </div>
   </div>
   </div>
