@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +24,7 @@ import com.virtusa.sportsmanagementsystem.teammanagerapi.service.TeamService;
 
 @RestController
 @RequestMapping("/api/team")
+@CrossOrigin(origins = "*", allowedHeaders = "*",methods={RequestMethod.POST,RequestMethod.GET,RequestMethod.OPTIONS})
 public class PlayerResources {
 	@Autowired
 	PlayerService playerservice;
@@ -49,6 +52,7 @@ public class PlayerResources {
 	@GetMapping("/playersBasedOnTeam")
 	public List<Player> playerListBasedOnTeam(@RequestParam("id") int id){
 		List<Player> playerList = playerservice.getPlayerListBasedOnTeam(id);
+		playerList.forEach((p) ->System.out.println(p));
 		return playerList;
 	}
 

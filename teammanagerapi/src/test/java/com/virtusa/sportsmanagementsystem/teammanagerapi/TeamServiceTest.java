@@ -63,7 +63,7 @@ public class TeamServiceTest {
 	public void registringPlayer() throws Exception {
 		
 	Player player = new Player();
-	player.setPlayerName("Chahel");
+	player.setPlayerName("Chahelw");
 	player.setPlayerRole("Bowler");
 	player.setPlayerDob("01-02-2001");
 	player.setBirthPlace("Delhi");
@@ -92,7 +92,7 @@ public class TeamServiceTest {
 	}
 	@Test
 	public void getTeamBasedOnPlayer() throws Exception {
-		ResultActions result=mockMvc.perform(MockMvcRequestBuilders.get("/api/team/Team-Player?id=86")
+		ResultActions result=mockMvc.perform(MockMvcRequestBuilders.get("/api/team/Team-Player?id=166")
 				.contentType(MediaType.APPLICATION_JSON));
 		result.andExpect(MockMvcResultMatchers.status().isOk()); 
 	}

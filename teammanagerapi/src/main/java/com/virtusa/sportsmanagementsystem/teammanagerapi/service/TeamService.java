@@ -40,6 +40,7 @@ public class TeamService {
 
 	
 	public Team getTeamBasedOnPlayer(int id) {
+		System.out.println(id +"ser");
 		Player player= playerRepository.getTeamBasedOnPlayer(id);
 		System.out.println(player.getTeam());
 		return player.getTeam();
