@@ -6,7 +6,7 @@ spring:
         active: dev
     datasource:
         dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://${DB_URL:172.25.160.59}:${DB_PORT:3306}/${DB_NAME:sportmanagementsystem}
+        url: jdbc:mysql://${DB_URL:localhost}:${DB_PORT:3306}/${DB_NAME:sportmanagementsystem}
         databaseName:
         serverName:
         username: ${DB_USERNAME:root}

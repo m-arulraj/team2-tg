@@ -32,11 +32,101 @@ public class MatchScoreTest {
 		this.mockMvc=MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 	@Test
-	public void testUpdationForNewMatch() throws Throwable{
+	public void testUpdationForNewMatchAndFour() throws Throwable{
 		BallScore ballScore= new BallScore();
 		ballScore.setBallNumber(1);
 		ballScore.setRuns(4);
 		ballScore.setWicket(false);
+		ballScore.setBattingPlayerId(Long.valueOf(172));
+		ballScore.setBowlingPlayerId(Long.valueOf(171));
+		ballScore.setMatchStatus("on-going");
+		ballScore.setScheduleId(Long.valueOf(141));
+		
+		String uri="/api/scoreboard/matchscore";
+				
+		mockMvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(ballScore)))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	public void testUpdationForSixforSecondBall() throws Throwable{
+		BallScore ballScore= new BallScore();
+		ballScore.setBallNumber(2);
+		ballScore.setRuns(6);
+		ballScore.setWicket(false);
+		ballScore.setBattingPlayerId(Long.valueOf(172));
+		ballScore.setBowlingPlayerId(Long.valueOf(171));
+		ballScore.setMatchStatus("on-going");
+		ballScore.setScheduleId(Long.valueOf(141));
+		
+		String uri="/api/scoreboard/matchscore";
+				
+		mockMvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(ballScore)))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	@Test
+	public void testUpdationFortwoRunforThirdBall() throws Throwable{
+		BallScore ballScore= new BallScore();
+		ballScore.setBallNumber(3);
+		ballScore.setRuns(2);
+		ballScore.setWicket(false);
+		ballScore.setBattingPlayerId(Long.valueOf(172));
+		ballScore.setBowlingPlayerId(Long.valueOf(171));
+		ballScore.setMatchStatus("on-going");
+		ballScore.setScheduleId(Long.valueOf(141));
+		
+		String uri="/api/scoreboard/matchscore";
+				
+		mockMvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(ballScore)))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+				//.andReturn().getResponse().getHeader("Location").toString();
+		
+		
+	}
+	@Test
+	public void testUpdationFortwoRunforFourthBall() throws Throwable{
+		BallScore ballScore= new BallScore();
+		ballScore.setBallNumber(4);
+		ballScore.setRuns(2);
+		ballScore.setWicket(false);
+		ballScore.setBattingPlayerId(Long.valueOf(172));
+		ballScore.setBowlingPlayerId(Long.valueOf(171));
+		ballScore.setMatchStatus("on-going");
+		ballScore.setScheduleId(Long.valueOf(141));
+		
+		String uri="/api/scoreboard/matchscore";
+				
+		mockMvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(ballScore)))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+				//.andReturn().getResponse().getHeader("Location").toString();
+		
+		
+	}
+	@Test
+	public void testUpdationFortwoRunforFifthBall() throws Throwable{
+		BallScore ballScore= new BallScore();
+		ballScore.setBallNumber(5);
+		ballScore.setRuns(2);
+		ballScore.setWicket(false);
+		ballScore.setBattingPlayerId(Long.valueOf(172));
+		ballScore.setBowlingPlayerId(Long.valueOf(171));
+		ballScore.setMatchStatus("on-going");
+		ballScore.setScheduleId(Long.valueOf(141));
+		
+		String uri="/api/scoreboard/matchscore";
+				
+		mockMvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(ballScore)))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+				//.andReturn().getResponse().getHeader("Location").toString();
+		
+		
+	}
+	@Test
+	public void testUpdationForSixBallAndWicket() throws Throwable{
+		BallScore ballScore= new BallScore();
+		ballScore.setBallNumber(6);
+		ballScore.setRuns(0);
+		ballScore.setWicket(true);
 		ballScore.setBattingPlayerId(Long.valueOf(172));
 		ballScore.setBowlingPlayerId(Long.valueOf(171));
 		ballScore.setMatchStatus("on-going");
@@ -48,23 +138,34 @@ public class MatchScoreTest {
 				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 	@Test
-	public void testUpdation() throws Throwable{
+	public void testUpdationException() throws Throwable{
 		BallScore ballScore= new BallScore();
-		ballScore.setBallNumber(3);
-		ballScore.setRuns(6);
+		ballScore.setBallNumber(1);
+		ballScore.setRuns(4);
+		ballScore.setWicket(false);
+		ballScore.setBowlingPlayerId(Long.valueOf(171));
+		ballScore.setScheduleId(Long.valueOf(198));
+		ballScore.setMatchStatus("on-going");
+		String uri="/api/scoreboard/matchscore";
+				
+		mockMvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(ballScore)))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+	
+	@Test
+	public void testUpdationBadRequest() throws Throwable{
+		BallScore ballScore= new BallScore();
+		ballScore.setBallNumber(1);
+		ballScore.setRuns(4);
 		ballScore.setWicket(false);
 		ballScore.setBattingPlayerId(Long.valueOf(172));
 		ballScore.setBowlingPlayerId(Long.valueOf(171));
-		ballScore.setMatchStatus("on-going");
-		ballScore.setScheduleId(Long.valueOf(1));
+		ballScore.setScheduleId(Long.valueOf(198));
 		
 		String uri="/api/scoreboard/matchscore";
 				
 		mockMvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(ballScore)))
-				.andExpect(MockMvcResultMatchers.status().isOk());
-				//.andReturn().getResponse().getHeader("Location").toString();
-		
-		
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 	
 	@Test
@@ -95,6 +196,15 @@ public class MatchScoreTest {
 	public void getPlayerTeamPerformance()throws Throwable {
 	
 		String uri="/api/scoreboard/matchscore/team-performance/84";
+		
+		mockMvc.perform(MockMvcRequestBuilders.get(uri)).andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	
+	@Test
+	public void getHighestScorer() throws Throwable{
+		
+		String uri="/api/scoreboard/matchscore/highest-scorer/119";
 		
 		mockMvc.perform(MockMvcRequestBuilders.get(uri)).andExpect(MockMvcResultMatchers.status().isOk());
 	}

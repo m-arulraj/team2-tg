@@ -1,5 +1,6 @@
 package com.sms.scoreboardapi.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import com.sms.scoreboardapi.repository.PlayerContestPerformanceRepository;
 import com.sms.scoreboardapi.repository.PlayerMatchPerformanceRepository;
 import com.sms.scoreboardapi.repository.PlayerRepository;
 import com.sms.scoreboardapi.repository.TeamPerformanceRepository;
+import com.sms.scoreboardapi.repository.TeamRepository;
 
 @Service
 public class ScoreBoardServiceImpl implements ScoreBoardService {
@@ -36,6 +38,8 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 	private PlayerMatchPerformanceRepository playerMatchPerformanceRepository;
 	@Autowired
 	private PlayerContestPerformanceRepository playerContestPerformanceRepository;
+	@Autowired
+	private TeamRepository teamRepository;
 	
 	private Player batsman,bowler;
 	private Team battingTeam,bowlingTeam;
@@ -115,6 +119,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		currentRuns= battingMatchScore.getRunsScored();
 		
 		battingMatchScore.setRunsScored(currentRuns+ballScore.getRuns());
+		
 	
 		if(ballScore.getRuns()==4) {
 			int fours= battingMatchScore.getFours();
@@ -153,7 +158,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		}
 		
 		battingMatchScore.setTeamId(battingTeam.getId());
-		
+		//battingMatchScore.setTeamName(teamRepository.findByid(battingMatchScore.getTeamId()));
 		
 		//set data for bowling team
 		if(ballScore.getBallNumber()!=6) {
@@ -187,6 +192,8 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		
 		bowlingMatchScore.setTeamId(bowlingTeam.getId());
 		bowlingMatchScore.setScheduleId(ballScore.getScheduleId());
+		logger.debug("bowling team name------------------------->>>>>>>>>>>>"+teamRepository.findByid(bowlingTeam.getId()));
+		bowlingMatchScore.setTeamName(teamRepository.findByid(bowlingTeam.getId()));
 		
 		matchScoreRepository.save(battingMatchScore);
 		matchScoreRepository.save(bowlingMatchScore);
@@ -408,8 +415,18 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		
 		logger.debug("service invoked for getting Match Score");
 		
-		return matchScoreRepository.findByScheduleId(scheduleId);
+		List<MatchScore> matchScores= matchScoreRepository.findByScheduleId(scheduleId);
+		if(!matchScores.isEmpty()) {
+			battingMatchScore=matchScores.get(0);
+			bowlingMatchScore=matchScores.get(1);
+			battingMatchScore.setTeamName(teamRepository.findByid(battingMatchScore.getTeamId()));
+			bowlingMatchScore.setTeamName(teamRepository.findByid(bowlingMatchScore.getTeamId()));
+			matchScores.removeAll(matchScores);
+			matchScores.add(battingMatchScore);
+			matchScores.add(bowlingMatchScore);
+		}
 		
+		return matchScores;
 	}
 
 	public PlayerMatchPerformance getPlayerMatchPerformance(Long playerId, Long scheduleId) {
@@ -433,7 +450,25 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		return teamPerformanceRepository.findByTeamId(teamId);
 	}
 
-	
+
+	@Override
+	public Player getHighestScorer(Long contestId) {
+
+		logger.debug("service invoked for getting highest runs scorer");
+		List<PlayerContestPerformance> playerContestPerformances=playerContestPerformanceRepository.findByContestId(contestId);
+		logger.debug("got list of players performance in the contest");
+        
+		Optional<PlayerContestPerformance> optPlayerContestPerformance=playerContestPerformances.stream().max(Comparator.comparing(PlayerContestPerformance::getRunsScored));
+		if(optPlayerContestPerformance.isPresent()) {
+			PlayerContestPerformance playerContestPerformance=optPlayerContestPerformance.get();
+			Player player=playerContestPerformance.getPlayer();
+			logger.debug("got highest scorer");
+			return player;
+		}
+		else {
+			return null;
+		}
+	}
 	
 	
 }

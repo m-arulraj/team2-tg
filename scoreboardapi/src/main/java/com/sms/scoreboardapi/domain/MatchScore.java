@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,9 @@ public class MatchScore {
 	private Long id;
 	
 	private Long scheduleId;
+	
+	@Transient
+	private String teamName;
 	@Column(name="runs_scored")
 	private int runsScored;
 	@Column(name="overs_faced")
@@ -148,5 +152,13 @@ public class MatchScore {
 
 	public void setTeamId(Long teamId) {
 		this.teamId = teamId;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
 	}
 }

@@ -1,5 +1,6 @@
 package com.sms.scoreboardapi.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface PlayerContestPerformanceRepository extends JpaRepository<Player
 
 	public Optional<PlayerContestPerformance> findByContestAndPlayer(Contest contest,Player player);
 	public PlayerContestPerformance findByPlayerIdAndContestId(long playerId,Long contestId);
+	public List<PlayerContestPerformance> findByContestId(Long contestId);
 }

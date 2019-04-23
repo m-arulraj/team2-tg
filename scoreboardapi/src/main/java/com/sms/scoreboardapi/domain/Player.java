@@ -1,5 +1,7 @@
 package com.sms.scoreboardapi.domain;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -48,8 +49,8 @@ public class Player {
 	 @JoinColumn(name="team_id")
 	 private Team team;
 	 
-	 @OneToOne(fetch = FetchType.EAGER, mappedBy = "player", cascade = CascadeType.ALL)
-	 private PlayerMatchPerformance playerMatchPerformance;
+	 @OneToMany(fetch = FetchType.EAGER, mappedBy = "player", cascade = CascadeType.ALL)
+	 private Set<PlayerMatchPerformance> playerMatchPerformance;
 	 
 	 @OneToOne(fetch = FetchType.EAGER, mappedBy = "player", cascade = CascadeType.ALL)
 	 private PlayerContestPerformance playerContestPerformance;
