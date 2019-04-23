@@ -21,6 +21,7 @@ public interface PlayerRepository extends JpaRepository<Player,Integer> {
 	
 	@Query("select p from Player p where p.team =:team")
 	 public List<Player> getplayersBasedOnteam(@Param("team") Team team);
+	
 	@Query("select p from Player p where p.id =:id")
 	 public Player getTeamBasedOnPlayer(@Param("id") int id);
 

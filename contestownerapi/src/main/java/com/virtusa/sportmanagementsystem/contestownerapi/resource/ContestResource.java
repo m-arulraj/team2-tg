@@ -5,19 +5,25 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.virtusa.sportmanagementsystem.contestownerapi.domain.Contest;
-import com.virtusa.sportmanagementsystem.contestownerapi.domain.ErrorResponse;
 import com.virtusa.sportmanagementsystem.contestownerapi.service.ContestService;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.POST, RequestMethod.GET,
+		RequestMethod.OPTIONS })
 @RequestMapping(value = "/api/contest")
 public class ContestResource {
 
@@ -26,21 +32,15 @@ public class ContestResource {
 	@Autowired
 	ContestService contestService;
 
-	private ErrorResponse populateErrorMessage() {
-		ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setError(true);
-		errorResponse.setMessage("Starting date Connot be Greater than Completion Date");
-		return errorResponse;
-	}
-
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<?> createContest(@RequestBody Contest contest) throws URISyntaxException, ParseException {
+	public ResponseEntity<?> createContest(@Valid @RequestBody Contest contest, BindingResult bindingResult)
+			throws URISyntaxException, ParseException {
 		logger.info("Controller Invoked");
-		Contest con = contestService.createContest(contest);
-		if (con != null) {
-			return ResponseEntity.created(new URI("/api/contest/" + con.getId())).build();
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(bindingResult.getAllErrors());
 		} else {
-			return ResponseEntity.status(422).body(populateErrorMessage());
+			return ResponseEntity.created(new URI("/api/contest/" + contestService.createContest(contest).getId()))
+					.build();
 		}
 	}
 

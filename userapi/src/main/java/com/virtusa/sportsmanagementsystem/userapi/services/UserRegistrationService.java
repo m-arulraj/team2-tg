@@ -26,22 +26,22 @@ public class UserRegistrationService {
 	UserRole userRole;
 	User user1;
 	@Transactional
-	public User registerUser(UserRole userRole) {
+	public UserRole registerUser(UserRole userRole) {
 		logger.info("loggerServices for registering user is started");
 		logger.debug("userServices for registering user is invoked");
-		User user =userRole.getUser();
+	User user =userRole.getUser();
 		user.setUsername(user.getEmail());
-	
-		Optional<UserRole> ur = userRoleRepository.findById(userRole.getId());
-		if(ur.isPresent()) {
-			this.userRole=ur.get();
-			if(this.userRole.getUser()==null) {
-				user=userRepository.save(userRole.getUser());
-				this.userRole.setUser(user);
-				userRoleRepository.save(this.userRole);
-			}
-		}		
-		return user;
+		User u1 = userRepository.save(user);
+		userRole.setUser(u1);
+		/*
+		 * Optional<UserRole> ur = userRoleRepository.findById(userRole.getId());
+		 * if(ur.isPresent()) { this.userRole=ur.get();
+		 * if(this.userRole.getUser()==null) {
+		 * user=userRepository.save(userRole.getUser()); this.userRole.setUser(user);
+		 * userRoleRepository.save(this.userRole); }
+		 */
+		//}		
+		return userRoleRepository.save(userRole);
 		
 		
 	}

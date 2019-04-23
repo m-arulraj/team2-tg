@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "schedule")
@@ -16,6 +18,8 @@ public class Schedule {
 	@Column(name = "id")
 	private Long id;
 	
+	@NotEmpty(message="Venue should not be empty")
+	@Pattern(regexp="[^0-9]*", message="Numbers are not accepted")
 	@Column(name = "venue")
 	private String venue;
 	

@@ -44,12 +44,11 @@ public class ContestTest {
 	}
 	
 	@Test
-	public void createContestWithWrongDates() throws Exception {
+	public void createContestWithoutContestName() throws Exception {
 		Contest contest = new Contest();
-		contest.setContestName("IPL");
 		contest.setContestType("T20");
 		contest.setNumberOfTeams(8L);
-		contest.setStartingDate("01/01/2003");
+		contest.setStartingDate("01/01/2001");
 		contest.setCompletionDate("01/01/2001");
 		contest.setUserId(100L);
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/contest").contentType(MediaType.APPLICATION_JSON)
@@ -57,16 +56,16 @@ public class ContestTest {
 	}
 	
 	@Test
-	public void createContestWithWrongDates2() throws Exception {
+	public void createContestWithWrongContestName() throws Exception {
 		Contest contest = new Contest();
-		contest.setContestName("IPL");
+		contest.setContestName("IPL20");
 		contest.setContestType("T20");
 		contest.setNumberOfTeams(8L);
 		contest.setStartingDate("01/01/2001");
 		contest.setCompletionDate("01/01/2001");
 		contest.setUserId(100L);
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/contest").contentType(MediaType.APPLICATION_JSON)
-				.content(new Gson().toJson(contest))).andExpect(MockMvcResultMatchers.status().isCreated());
+				.content(new Gson().toJson(contest))).andExpect(MockMvcResultMatchers.status().is(422));
 	}
 	
 	@Test

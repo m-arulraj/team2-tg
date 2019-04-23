@@ -29,29 +29,27 @@ public class ContestService {
 		return sqlDate;
 	}
 
-	public boolean dateComparison(String startDate, String completionDate) throws ParseException {
-		logger.debug("Comparing Starting and Completion Dates");
-		Date javaStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-		Date javaCompletionDate = new SimpleDateFormat("dd/MM/yyyy").parse(completionDate);
-		int status = javaStartDate.compareTo(javaCompletionDate);
-		if (status < 0) {
-			logger.debug("Starting Date is Before Completion Date");
-			return false;
-		} else if (status == 0) {
-			logger.debug("Starting Date is Equal to Completion Date");
-			return false;
-		} else {
-			logger.debug("Starting Date is Greater than Completion Date");
-			return true;
-		}
-	}
+	/*
+	 * public boolean dateComparison(String startDate, String completionDate) throws
+	 * ParseException { logger.debug("Comparing Starting and Completion Dates");
+	 * Date javaStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+	 * Date javaCompletionDate = new
+	 * SimpleDateFormat("dd/MM/yyyy").parse(completionDate); int status =
+	 * javaStartDate.compareTo(javaCompletionDate); if (status < 0) {
+	 * logger.debug("Starting Date is Before Completion Date"); return false; } else
+	 * if (status == 0) { logger.debug("Starting Date is Equal to Completion Date");
+	 * return false; } else {
+	 * logger.debug("Starting Date is Greater than Completion Date"); return true; }
+	 * }
+	 */
 
 	public Contest createContest(Contest contest) throws ParseException {
 		logger.debug("Contest Service Invoked");
-		if (dateComparison(contest.getStartingDate(), contest.getCompletionDate())) {
-			logger.debug("Starting date Connot be Greater than Completion Date");
-			return null;
-		}
+		/*
+		 * if (dateComparison(contest.getStartingDate(), contest.getCompletionDate())) {
+		 * logger.debug("Starting date Connot be Greater than Completion Date"); return
+		 * null; }
+		 */
 		String startDate = dateConvertion(contest.getStartingDate());
 		logger.debug("Starting Date Converted");
 		String completionDate = dateConvertion(contest.getCompletionDate());

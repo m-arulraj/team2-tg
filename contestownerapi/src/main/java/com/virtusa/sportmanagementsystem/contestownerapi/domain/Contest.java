@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "contest")
@@ -15,6 +17,8 @@ public class Contest {
 	@Column(name = "id")
 	private Long id;
 
+	@NotEmpty(message="Contest name should not be empty")
+	@Pattern(regexp="[^0-9]*", message="Numbers are not accepted")
 	@Column(name = "contest_name")
 	private String contestName;
 

@@ -45,39 +45,24 @@ public class ScheduleTest {
 	}
 	
 	@Test
-	public void addScheduleWithWrongMatchDateTest() throws Exception {
+	public void addScheduleWithoutVenueTest() throws Exception {
 		Schedule schedule = new Schedule();
-		schedule.setVenue("Chennai");
-		schedule.setMatchDate("01/02/2009");
-		schedule.setContestId(119L);
-		schedule.setTeamOne(84L);
-		schedule.setTeamTwo(113L);
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/schedule/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(new Gson().toJson(schedule)))
-		.andExpect(MockMvcResultMatchers.status().is(422));
-	}
-	
-	@Test
-	public void addScheduleWithWrongMatchDateTest2() throws Exception {
-		Schedule schedule = new Schedule();
-		schedule.setVenue("Chennai");
-		schedule.setMatchDate("01/02/2000");
-		schedule.setContestId(119L);
-		schedule.setTeamOne(84L);
-		schedule.setTeamTwo(113L);
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/schedule/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(new Gson().toJson(schedule)))
-		.andExpect(MockMvcResultMatchers.status().is(422));
-	}
-	
-	@Test
-	public void addScheduleWithWrongContestIdTest() throws Exception {
-		Schedule schedule = new Schedule();
-		schedule.setVenue("Chennai");
 		schedule.setMatchDate("01/02/2001");
-		schedule.setContestId(500L);
+		schedule.setContestId(119L);
+		schedule.setTeamOne(84L);
+		schedule.setTeamTwo(113L);
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/schedule/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new Gson().toJson(schedule)))
+		.andExpect(MockMvcResultMatchers.status().is(422));
+	}
+	
+	@Test
+	public void addScheduleWithWrongVenueNameTest() throws Exception {
+		Schedule schedule = new Schedule();
+		schedule.setVenue("Chennai200");
+		schedule.setMatchDate("01/02/2001");
+		schedule.setContestId(119L);
 		schedule.setTeamOne(84L);
 		schedule.setTeamTwo(113L);
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/schedule/")

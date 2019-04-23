@@ -1,7 +1,4 @@
-
-<!DOCTYPE html>
-<html>
-<head>
+<html><head>
 <title>The Gamer</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -14,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src=""></script>
-<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css?family=Sofia" rel="stylesheet">
 <style>
   .main-body-wrapper{
     width:80%;
@@ -107,45 +104,45 @@
   <div class="mid-wrapper">
      <div>
      <div class="form-container">
-        <form method="post" action="#">
+        <form id="form" method="post" action="#" onsubmit="submission(event)">
             <h3 style="color:white;text-align:center">Sign Up</h3>        
             
           <label class="input-title" for="name">Name:</label>
-          <input class="req" type="textbox" name="name" placeholder="Enter your name"/>
+          <input class="req form-data" type="textbox" name="name" placeholder="Enter your name">
           <span class="err-msg">Name is required</span>
 
           <label class="input-title" for="email">Email Id:</label>
-          <input class="req email" type="email" name="email" placeholder="Enter your email id"/>
+          <input class="req email form-data" type="email" name="email" placeholder="Enter your email id">
           <span class="err-msg">Email is required</span>
 
           <label class="input-title" for="mobile">Contact No:</label>
-          <input class="req mob" type="textbox" name="mobile" placeholder="Enter your mobile no" onkeypress="onlyNumber(event)"/>
+          <input class="req mob form-data" type="textbox" name="mobile" placeholder="Enter your mobile no" onkeypress="onlyNumber(event)">
           <span class="err-msg">Enter 10 digits number</span>
 
           <label class="input-title" for="dob">Date of Birth:</label>
-          <input class="req" type="date" name="dob" placeholder="Enter Date of Birth"/>
+          <input class="req form-data" type="date" name="dob" placeholder="Enter Date of Birth">
           <span class="err-msg">Date is not valid</span>
 
           <label class="input-title" for="address">address</label>
-          <input class="req" type="textbox" name="address" placeholder="Enter address"/>
+          <input class="req form-data" type="textbox" name="address" placeholder="Enter address">
           <span class="err-msg">address requied</span>
 
           <label class="input-title" for="role">Role</label>
-          <select>
+          <select id="role">
             <option value="1">Team Owner</option>
             <option value="2">Contest Owner</option>
           </select>
           <span class="err-msg">role is requied</span>
 
           <label class="input-title" for="password">Password</label>
-          <input id="pass" class="req" type="textbox" name="password" placeholder="Enter password"/>
+          <input id="pass" class="req form-data" type="textbox" name="password" placeholder="Enter password">
           <span class="err-msg">Password required</span>
 
           <label class="input-title" for="confirm">Confirm Password</label>
-          <input class="req" type="textbox" name="confirm" placeholder="Confirm" onchange="matchPasswords(event)"/>
+          <input class="req" type="textbox" name="confirm" placeholder="Confirm" onchange="matchPasswords(event)">
           <span class="err-msg">Passwords mismatch</span>
 
-          <input type="submit" class="btn" value="Register"/>
+          <input type="submit" class="btn" value="Register">
 
         </form> 
      </div>
@@ -153,6 +150,23 @@
    <div style="padding:40px 0;"></div>
 </div>
 <script>
+    function submission(event){
+    	event.preventDefault();
+    	userRole={};
+    	user={};
+    	let formData=document.getElementsByClassName("form-data");
+    	for(let i=0;i<formData.length;i++){
+    		user[formData[i].name]=formData[i].value;
+    		
+    	}
+    	userRole.role=document.querySelector("#role").value;	
+    	userRole.user=user;
+    	userRoleJson=JSON.stringify(userRole);
+    	console.log(userRoleJson);
+    	
+    
+    }
+
      function checkError(event){
       let inputName=event.target.name;
       if(inputName=="email")
@@ -247,5 +261,5 @@ function onlyNumber(e){
              event.target.nextElementSibling.style.display="none";
         }
    </script>
-</body>
-</html>
+
+</div></body></html>

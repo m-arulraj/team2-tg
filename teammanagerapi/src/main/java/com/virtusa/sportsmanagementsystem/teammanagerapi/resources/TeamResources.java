@@ -10,10 +10,13 @@ import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +25,8 @@ import com.virtusa.sportsmanagementsystem.teammanagerapi.service.TeamService;
 
 @RestController
 @RequestMapping("/api/team")
+@CrossOrigin(origins = "*", allowedHeaders = "*",methods={RequestMethod.POST,RequestMethod.GET,RequestMethod.OPTIONS})
+
 public class TeamResources {
 	@Autowired
 	TeamService teamService;
@@ -49,7 +54,12 @@ public class TeamResources {
 
 	@GetMapping("/Team-Player")
 	public Team getTeamBasedOnPlayer(@RequestParam("id") int id) {
+		System.out.println(id);
 		return teamService.getTeamBasedOnPlayer(id);
+	}
+	@GetMapping("/{contestId}")
+	public List<Team> getteamListBasedonContestId(@PathVariable(name="contestId") int contestId) {
+		return teamService.getteamlistBasedOnContestId(contestId);
 	}
 
 }

@@ -7,11 +7,12 @@ eureka:
 logging:
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n'
-
 spring:
+    profiles:
+        active: dev
     datasource:
         dataSourceClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://${DB_URL:172.25.160.59}:${DB_PORT:3306}/${DB_NAME:sportmanagementsystem}
+        url: jdbc:mysql://${DB_URL:10.5.113.99}:${DB_PORT:3306}/${DB_NAME:sportmanagementsystem}
         databaseName:
         serverName:
         username: ${DB_USERNAME:root}

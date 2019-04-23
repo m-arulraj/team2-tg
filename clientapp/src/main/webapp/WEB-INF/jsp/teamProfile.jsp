@@ -2,8 +2,7 @@
       pageEncoding="ISO-8859-1"%>
 
 <!DOCTYPE html>
-<html>
-<head>
+<html><head>
 <title>The Gamer</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -16,7 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="/js/user.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css?family=Sofia" rel="stylesheet">
 <style>
   .main-body-wrapper{
     width:80%;
@@ -125,12 +124,8 @@
                         <h4 class="field">No Results:</h4>
                         <h4 class="field">Points:</h4>
                      </div>
-                     <div class="column7">
-                        <h4 class="field">10</h4>
-                        <h4 class="field">6</h4>
-                        <h4 class="field">4</h4>
-                        <h4 class="field">0</h4>
-                        <h4 class="field">12</h4>
+                     <div class="column7 performance-container">
+                       
                      </div>
                   </div>
 <!--                 </div> -->
@@ -144,34 +139,8 @@
             <div class="summary">
                <div class="batting part">  
                  <div>
-                   <table>
-                     <tr>
-                       <th><a href="/player?id=2">Sourav Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Sachin Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Laxman Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Rahul Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Mahendra Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Harvajan Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Virat Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Goutam Das</a></th>
-                     </tr>
-                     <tr>
-                       <th><a href="/player?id=2">Virendra Das</a></th>
-                     </tr>
+                   <table class="team-details-container">
+                     
                    </table>
                  </div>
                </div>
@@ -183,10 +152,60 @@
      </div>
   </div>
 </div>
-<div ></div>
+<div></div>
 <script>
+let loc=window.location.href;
+var url = new URL(loc);
+var id = url.searchParams.get("tId");
+var cid=url.searchParams.get("cId");
+console.log(cid,id);
+function loadTeam(){
 
+	let xhttp=new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	     allPlayers = JSON.parse(this.response);
+		 setTeam(allPlayers);
+	    }
+	  };
+	xhttp.open("get","http://10.5.113.87:8091/api/team/playersBasedOnTeam?id="+id,true);
+	xhttp.send();
+}
+
+function setTeam(allPlayers){
+	elements=document.getElementsByClassName("team-details-container")[0];
+	allPlayers.forEach(function(player){
+		elements.innerHTML+="<tr><th><a href='/player?pid="+player.id+"&cid="+cid+"'>"+player.playerName+"</a></th></tr>"
+	})
+}
+loadTeam();
+
+function loadPerformance(){
+	let loc=window.location.href;
+	var url = new URL(loc);
+	var id = url.searchParams.get("tId");
+	let xhttp=new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	    	performance = JSON.parse(this.response);
+	    	setPerformance(performance);
+	    }
+	  };
+	xhttp.open("get","http://10.5.113.66:9090/api/scoreboard/matchscore/team-performance/"+id,true);
+	xhttp.send();
+}
+
+function setPerformance(performance){
+	elements=document.getElementsByClassName("performance-container")[0];
+		elements.innerHTML+="<h4 class='field'>"+performance.matchesPlayed+"</h4>"+
+		                     "<h4 class='field'>"+performance.win+"</h4>"+
+		                     "<h4 class='field'>"+performance.loss+"</h4>"+
+		                     "<h4 class='field'>"+performance.noResult+"</h4>"+
+		                     "<h4 class='field'>"+performance.points+"</h4>"
+}
+
+loadPerformance();
 
 </script>
-</body>
-</html>
+
+</body></html>

@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
+<html><head>
 <title>The Gamer</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -15,7 +13,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css?family=Sofia" rel="stylesheet">
 <style>
   .main-body-wrapper{
     width:80%;
@@ -138,16 +136,15 @@
            <span class="schedule">Pune Perfects</span>
           </div> -->
           <div class="form-container">
-          <table>
-           <tr>
-              <th>Venue</th><th>Match Date</th><th>Team  One</th><th>Teaam Two</th>
+          <table class="schedule-container">
+           <tbody><tr>
+              <th>Venue</th><th>Match Date</th><th>Team  One</th><th>Teaam Two</th><th>Other</th>
            </tr>
-           <tr>
-              <td>Dr.Dy.Ptil Stadium</td><td>30.10.2020</td><td>Kochi kings</td><td>Pune Perfectionists</td>
-           </tr>
-          </table>
+           
+          </tbody></table>
           </div>
-                <button class="btn" style="width:50%;margin:auto;display:block;margin-top:20px"onclick='openModal()'>Add Schedule</button>
+                <button class="btn" style="width:50%;margin:auto;display:block;margin-top:20px" onclick="openModal()">Add Schedule</button>
+                 
        </div>
 
    <div style="padding:40px 0;"></div>
@@ -158,30 +155,63 @@
      <div class="form-container">
         <form method="post" action="#">
           <span style="color:white;text-align:center;width:80%;display:inline-block">Add Schedule</span>  
-          <span style="color:red;font-weight:bold;font-size:26px;" onclick='closeModal()'>X</span>                  
+          <span style="color:red;font-weight:bold;font-size:26px;" onclick="closeModal()">X</span>                  
           <label class="input-title" for="venue">Match Venue:</label>
-          <input class="req" type="textbox" name="venue" placeholder="Enter Venue"/>
+          <input class="req" type="textbox" name="venue" placeholder="Enter Venue">
           <label class="input-title" for="date">Match Date:</label>
-          <input class="req" type="date" name="date" placeholder="Enter match date"/>
+          <input class="req" type="date" name="date" placeholder="Enter match date">
           <label class="input-title" for="one">Team One:</label>
-          <input class="req" type="textbox" name="one" placeholder="Enter first team"/>	  
+          <input class="req" type="textbox" name="one" placeholder="Enter first team">	  
 		  <label class="input-title" for="two">Team Two:</label>
-          <input class="req" type="textbox" name="two" placeholder="Enter second team"/>
-          <input type="submit" class="contest-btn" value="Add schedule"/>
+          <input class="req" type="textbox" name="two" placeholder="Enter second team">
+          <input type="submit" class="contest-btn" value="Add schedule">
         </form> 
      </div>
    </div>
 </div>
 </div>
 <script>
-     function openModal(e){
+     function openModal(e,schedule){
     	 document.getElementById("mod").style.display="block";
-    	 console.log(e);
+    	  if(schedule){
+    		  els=document.getElementsByClassName("req");
+    		  els[0].value=schedule.venue;
+    		  els[1].value=schedule.matchDate;
+    		  els[2].value=schedule.teamOne;
+    		  els[3].value=schedule.teamTwo;
+    	  }
      }
      
      function closeModal(){
     	 document.getElementById("mod").style.display="none";
      }
+     
+
+     
+    	 function loadSchedules(){
+    		let xhttp=new XMLHttpRequest();
+    		xhttp.onreadystatechange = function() {
+    		    if (this.readyState == 4 && this.status == 200) {
+    		    	allSchedules = JSON.parse(this.response);
+    		     setSchedules(allSchedules);
+    		    }
+    		  };
+    		xhttp.open("get","http://10.5.113.66:8090/api/schedule",true);
+    		xhttp.send();
+    	}
+
+    	function setSchedules(allSchedules){
+    		elements=document.getElementsByClassName("schedule-container")[0];
+    		elements.innerHTML="";
+    		allSchedules.forEach(function(schedule){
+    			elements.innerHTML+="<tr><td>"+schedule.venue+"</td><td>"+schedule.matchDate+"</td><td>"+schedule.teamOneName+
+    			                    "</td><td>"+schedule.teamTwoName+"</td><td>"+
+    			                    "<button class='btn' style='margin:auto;display:block;margin-top:20px'onclick='openModal(true,"+JSON.stringify(schedule)+")'>"+
+    			                    "Update</button></td></tr>"
+    		})
+    	}
+
+    	loadSchedules();
 </script>
-</body>
-</html>
+
+</body></html>
