@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: contestownerapi
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: srinivasmu
+Built-By: mukulutrani
 Implementation-Vendor-Id: com.virtusa.sportmanagementsystem
-Build-Jdk: 1.8.0_171
+Build-Jdk: 1.8.0_172
 Implementation-URL: http://maven.apache.org
 Created-By: Maven Integration for Eclipse
 
