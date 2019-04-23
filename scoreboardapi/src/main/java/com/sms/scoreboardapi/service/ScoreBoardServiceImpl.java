@@ -450,8 +450,6 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		return teamPerformanceRepository.findByTeamId(teamId);
 	}
 
-
-	@Override
 	public Player getHighestScorer(Long contestId) {
 
 		logger.debug("service invoked for getting highest runs scorer");
