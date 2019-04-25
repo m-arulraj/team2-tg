@@ -14,14 +14,15 @@ import com.virtusa.sportsmanagementsystem.teammanagerapi.domain.Team;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Integer> {
 
-	@Query("select t.teamName from Team t")
-	List<String> getListOfTeams();
+	@Query("select t from Team t")
+	List<Team> getListOfTeams();
 	
 	@Query("select t from Team t where t.teamName=:teamName")
 	Team getTeam(@Param("teamName") String teamName);
 	
 	@Query("select t from Team t where t.contestId=:contestId")
 	List<Team> getListOfTeamsbasedonContestId(@Param("contestId") int contestId);
-	
+	@Query("select t from Team t where t.id=:id")
+	Team getTeambasedonId(@Param("id") int id);
 	
 }

@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
       pageEncoding="ISO-8859-1"%>
 
-<html><head>
+<!DOCTYPE html>
+<html>
+<head>
 <title>The Gamer</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -14,7 +16,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="/js/user.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Sofia" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
 <style>
   .main-body-wrapper{
     width:80%;
@@ -142,23 +144,27 @@
                <div class="batting part">
                  <h3>Batting Summary:</h3>
                  <div>
-                   <table class="performance-container">
-                     <tbody><tr>
+                   <table>
+                     <tr>
                        <th>Matches</th><th>Runs Scored</th><th>Balls Faced</th><th>Average</th><th>Strike Rate</th><th>4'S</th><th>6'S</th><th>50'S</th><th>100'S</th><th>Best Score</th>
                      </tr>
-                     
-                   </tbody></table>
+                     <tr>
+                       <td>10</td><td>500</td><td>740</td><td>50</td><td>82</td><td>75</td><td>30</td><td>3</td><td>2</td><td>183</td>
+                     </tr>
+                   </table>
                  </div>
                </div>
                <div class="bowling part">
                  <h3>Bowling Summary:</h3>
                  <div>
-                   <table class="performance-container">
-                     <tbody><tr>
+                   <table>
+                     <tr>
                        <th>Matches</th><th>Overs Bowled</th><th>Wickets</th>
                      </tr>
-                    
-                   </tbody></table>
+                     <tr>
+                       <td>5</td><td>50</td><td>15</td>
+                     </tr>
+                   </table>
                  </div>
                </div>
             </div>
@@ -168,38 +174,10 @@
      </div>
   </div>
 </div>
-<div></div>
+<div ></div>
 <script>
 
-let loc=window.location.href;
-let url = new URL(loc);
-let pid = url.searchParams.get("pid");
-let cid = url.searchParams.get("cid");
-function loadPerformance(){
-	let xhttp=new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	     performance = JSON.parse(this.response);
-		 setPerformance(performance);
-	    }
-	  };
-	 xhttp.open("get","http://10.5.113.66:9090/api/scoreboard/matchscore/player-contest-performance/"+pid+"/"+cid,true); 
-	 xhttp.send();
-}
-
-function setPerformance(performance){
-	let str="<tr><td>"+performance.matches+"</td><td>"+performance.runScored+"</td>"+
-	        "<td>"+performance.ballsFaced+"</td><td>"+performance.average+"</td><td>"+performance.strikeRate+"</td>"+
-	        "<td>"+performance.fours+"</td><td>"+performance.sixes+"</td><td>"+performance.halfCentury+"</td><td>"+performance.century+"</td><td>"+performance.bestScore+"</td>";
-	let bat=document.getElementsByClassName("performance-container")[0];
-	let bowl=document.getElementsByClassName("performance-container")[1];
-            bat.innerHTML+=str;
-    
-    let bowlStr=" <tr><td>"+performance.matches+"</td><td>"+performance.overBowled+"</td><td>"+performance.wickets+"</td></tr>";
-           bowl.innerHTML+=bowlStr;
-}
-loadPerformance();
 
 </script>
-
-</body></html>
+</body>
+</html>

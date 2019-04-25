@@ -2,7 +2,8 @@
       pageEncoding="ISO-8859-1"%>
 
 <!DOCTYPE html>
-<html><head>
+<html>
+<head>
 <title>The Gamer</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -15,7 +16,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="/js/user.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Sofia" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
 <style>
   .main-body-wrapper{
     width:80%;
@@ -90,37 +91,23 @@
   
   <div class="mid-wrapper">
     <div class="form-container">
-      <table class="team-container">
-        <tbody><tr><th>Team Name</th><th>Points</th></tr>
-      </tbody></table>
+      <table>
+        <tr><th>Team Name</th><th>Points</th></tr>
+        <tr><td><a href="/contest/team?cId=2&tId=2">CSK</a></td><td>10</td></tr>
+        <tr><td>KKR</td><td>8</td></tr>
+        <tr><td>MI</td><td>6</td></tr>
+        <tr><td>KXIP</td><td>6</td></tr>
+        <tr><td>RR</td><td>6</td></tr>
+        <tr><td>DC</td><td>6</td></tr>
+        <tr><td>RCB</td><td>4</td></tr>
+      </table>
     </div>
   </div>
 </div>
-<div></div>
+<div ></div>
 <script>
-let loc=window.location.href;
-var url = new URL(loc);
-var id = url.searchParams.get("id");
-function loadContest(){
-	
-	let xhttp=new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	     allTeam = JSON.parse(this.response);
-		 setContests(allTeam);
-	    }
-	  };
-	 xhttp.open("get","http://10.5.113.87:8091/api/team/"+id,true); 
-	xhttp.send();
-}
 
-function setContests(allTeam){
-	elements=document.getElementsByClassName("team-container")[0];
-	allTeam.forEach(function(team){
-		elements.innerHTML+="<tr><td><a href='/contest/team?cId="+id+"&tId="+team.id+"'>"+team.teamName+"("+team.introducedOn+")</a></td><td>"+""+"</td></tr>"
-	})
-}
-loadContest();
+
 </script>
-
-</body></html>
+</body>
+</html>

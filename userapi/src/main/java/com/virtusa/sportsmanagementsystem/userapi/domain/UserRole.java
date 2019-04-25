@@ -11,13 +11,13 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 
 @Entity
-@Table(name="user_role")
+@Table(name="authorities")
 public class UserRole {
 	@Id
 	@GeneratedValue
 	@Column(name="id")
 	private int id;
-	@Column(name="role")
+	@Column(name="authority")
 	private String role;
 	@Valid
 	@OneToOne

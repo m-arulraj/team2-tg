@@ -76,8 +76,10 @@
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Schedule</a>
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">News</a>
 	<a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Photos</a>
-	<a href="/contest/create" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Create Contest</a>
+	<a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">More</a>
 	<a href="/login" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Log In</a>
+	<a href="/register" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white">Sign Up</a>
+	
   </div>
   </div>
   </div>
@@ -88,11 +90,11 @@
          <div class="mid-col" style=""><h4 style="color:green">Latest News</h4></div>
          <div class="mid-col sec" style="">
             <h4>Contests</h4>
-            <table class="contest-container">
-               <tbody><tr>
+            <table>
+               <tr>
                  <th><a href="/contest?id=2">IPL(T20)</a></th><th>21st Jun</th><th>To</th><th>31st July</th>
                </tr>
-            </tbody></table>
+            </table>
          
          </div>
          <div class="mid-col" style="">
@@ -106,32 +108,10 @@
      </div>
   </div>
 </div>
-<div></div>
+<div ></div>
 <script>
-let allContest;
-function loadContest(){
-	let xhttp=new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	     allContest = JSON.parse(this.response);
-		 setContests(allContest);
-	    }
-	  };
-	xhttp.open("get","http://10.5.113.66:8090/api/contest",true);
-	xhttp.send();
-}
 
-function setContests(allContest){
-	elements=document.getElementsByClassName("contest-container")[0];
-	elements.innerHTML="";
-	allContest.forEach(function(contest){
-		elements.innerHTML+="<tr><th><a href='/contest?id="+contest.id+"'>"+contest.contestName+"</a></th><th>"+contest.startingDate+"</th><th>To</th><th>"+contest.completionDate+"</th></tr>"
-	})
-}
 
-loadContest();
 </script>
-
-</body>
 </body>
 </html>

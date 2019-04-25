@@ -29,7 +29,7 @@ public class ClientControler {
 
 	@GetMapping(value="/")
 	public String getHome() {
-		return "home";
+		return "teamManager";
 	}
 	
 	@GetMapping(value="/register")
@@ -43,7 +43,7 @@ public class ClientControler {
 	}
 	
 	@GetMapping(value="/player")
-	public String getPlayerDetails(@RequestParam("pid")long id) {
+	public String getPlayerDetails(@RequestParam("id")long id) {
 		System.out.println("id");
 		return "playerProfile";
 	}

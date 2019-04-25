@@ -34,19 +34,28 @@ public class TeamService {
 			return null;
 	}
 
-	public List<String> getteamlist() {
+	public List<Team> getteamlist() {
 		return teamRepository.getListOfTeams();
 	}
 
 	
 	public Team getTeamBasedOnPlayer(int id) {
-		System.out.println(id +"ser");
 		Player player= playerRepository.getTeamBasedOnPlayer(id);
-		System.out.println(player.getTeam());
 		return player.getTeam();
 	}
 	public List<Team> getteamlistBasedOnContestId(int contestId) {
 		return teamRepository.getListOfTeamsbasedonContestId(contestId);
+	}
+	public Team updateTeam(int id,Team team) {
+			team.setId(id);
+			return teamRepository.save(team);
+		
+	}
+
+	public Team getteam(int id) {
+		Team team = teamRepository.findById(id).get();
+		
+		return team;
 	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,9 +25,8 @@ import com.virtusa.sportsmanagementsystem.teammanagerapi.domain.Team;
 import com.virtusa.sportsmanagementsystem.teammanagerapi.service.TeamService;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*",methods={RequestMethod.POST,RequestMethod.GET,RequestMethod.PUT,RequestMethod.OPTIONS})
 @RequestMapping("/api/team")
-@CrossOrigin(origins = "*", allowedHeaders = "*",methods={RequestMethod.POST,RequestMethod.GET,RequestMethod.OPTIONS})
-
 public class TeamResources {
 	@Autowired
 	TeamService teamService;
@@ -37,7 +37,6 @@ public class TeamResources {
 		logger.info("register team controller is started");
 		logger.debug("Team Registration controller is invoked");
 		logger.error(bindResult.getFieldError());
-		System.out.println(bindResult.getFieldError());
 		if (bindResult.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		} else {
@@ -48,18 +47,30 @@ public class TeamResources {
 	}
 
 	@GetMapping("")
-	public List<String> getteamList() {
+	public List<Team> getteamList() {
 		return teamService.getteamlist();
 	}
 
 	@GetMapping("/Team-Player")
 	public Team getTeamBasedOnPlayer(@RequestParam("id") int id) {
-		System.out.println(id);
 		return teamService.getTeamBasedOnPlayer(id);
 	}
 	@GetMapping("/{contestId}")
 	public List<Team> getteamListBasedonContestId(@PathVariable(name="contestId") int contestId) {
 		return teamService.getteamlistBasedOnContestId(contestId);
+	}
+	@PutMapping("/{id}")
+	public ResponseEntity<Team> updateTeam(@PathVariable(name="id") int id, @RequestBody Team team){
+		Team t = teamService.updateTeam(id, team);
+		return t != null ? new ResponseEntity<Team>(t, HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+	}
+	@GetMapping("/team/{tId}")
+	public ResponseEntity<Team>  getteam(@PathVariable(name="tId") int id) {
+		Team t =teamService.getteam(id);
+		return t != null ? new ResponseEntity<Team>(t, HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

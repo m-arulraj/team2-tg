@@ -1,6 +1,7 @@
 package com.virtusa.sportsmanagementsystem.userapi.resources;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +28,7 @@ import com.virtusa.sportsmanagementsystem.userapi.services.UserRegistrationServi
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "*", allowedHeaders = "*",methods={RequestMethod.POST,RequestMethod.GET,RequestMethod.OPTIONS})
 public class UserRegistrationResources {
 	@Autowired
 	UserRegistrationService userService;
@@ -60,16 +64,22 @@ public class UserRegistrationResources {
 		return userService.updateUser(id, user);
 		
 	}
-	@GetMapping(value="")
-	public ResponseEntity<User> getUser(@RequestParam("username") String username){
+	@GetMapping(value="/{username}")
+	public ResponseEntity<User> getUser(@PathVariable(name="username")  String username){
+		System.out.println("user " +username);
+		System.out.println(userService.getUser(username));
 		return new ResponseEntity<User>(userService.getUser(username),HttpStatus.OK);
 	}
 	
 
-	@GetMapping(value="/userrole")
-	public ResponseEntity<UserRole> getUserRole(@RequestParam("username") String username){
+	@GetMapping(value="/{username}/userrole")
+	public ResponseEntity<UserRole> getUserRole(@PathVariable(name="username")  String username){
+		System.out.println(username);
+		System.out.println(userService.getUserRole(username));
 		return new ResponseEntity<UserRole>(userService.getUserRole(username),HttpStatus.OK);
-		
-		
 	}
+	@GetMapping(value="/roles")
+	public ResponseEntity<List<String>> getUserRoles(){
+		return new ResponseEntity<List<String>>(userService.getUserRoles(),HttpStatus.OK);
+}
 }

@@ -1,5 +1,7 @@
 package com.virtusa.sportsmanagementsystem.userapi.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +21,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole	, Integer>{
 	
 	@Query("select u from UserRole u  where u.user = :user ")
 	 UserRole findUserRole(@Param("user") User user);
+	
+	@Query("select u.role from UserRole u ")
+	 List<String> findUserRoles();
 }

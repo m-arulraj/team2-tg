@@ -1,5 +1,6 @@
 package com.virtusa.sportsmanagementsystem.userapi.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -83,13 +84,16 @@ public class UserRegistrationService {
 	public User getUser(String username) {
 		logger.info("loggerServices for getting  user based on username is started");
 		logger.debug("userServices for getting  user based on username user is invoked");
-		User user = userRepository.getUsesr(username);
+		User user = userRepository.getUser(username);
 		return user;
 	}
 	public UserRole getUserRole(String username) {
-		User user = userRepository.getUsesr(username);
+		User user = userRepository.getUser(username);
 		UserRole userRole = userRoleRepository.findUserRole(user);
 		return userRole; 
+	}
+	public List<String> getUserRoles() {
+		return userRoleRepository.findUserRoles();
 	}
 	
 	

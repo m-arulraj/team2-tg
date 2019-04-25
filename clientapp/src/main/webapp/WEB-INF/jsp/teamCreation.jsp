@@ -1,3 +1,10 @@
+<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%> --%>
+    
+<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+	
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> --%>
 
 <!DOCTYPE html>
 <html>
@@ -52,40 +59,48 @@
         padding:8px 0;
       }
       .input-title{
-        display:block;
-        padding:8px 16px;
+        display: inline-block;
+        padding: 14px 25px;
+        width: 40%;
         background-color: darkseagreen;
+		    margin-left: 27px;
       }
      input,select{
-        width: -webkit-fill-available;
         padding: 12px 16px;
+        display: inline-block;
+        width: 50%;
      }
      .form-container{
-      width: 30%;
+      width: 60%;
       margin: auto;
       background-color: darkcyan;
       padding: 15px 0px 0px;
          
     }
-    .btn{
-       padding:16px;
-       background-color:floralwhite; 
-       border: none;
-       color: black;
-       text-align: center;
-       text-decoration: none;
-       transition-duration: 0.4s;
-       cursor: pointer;
-       border: 2px solid #4CAF50;
+    .contest-btn{
+          padding: 16px;
+          background-color: floralwhite;
+          border: none;
+         color: black;
+        text-align: center;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin: auto;
+    border: 2px solid #4CAF50;
+    width: 50%;
+    display: block;
     }
 
-.btn:hover {
+.contest-btn:hover {
   background-color: #4CAF50;
   color: white;
 }
 </style>
 </head>
 <body style="background-color: aliceblue;">
+<%-- <sec:authentication property="principal"/>
+ Welcome Mr. ${principal.username} --%>
  <div class="main-body-wrapper">
    <div class="nav-container">
    <div class="">
@@ -103,54 +118,43 @@
   </div>
   </div>
   </div>
-  
+  <h3 id="user">Welcome Mr. </h3>
   <div class="mid-wrapper">
      <div>
      <div class="form-container">
         <form method="post" action="#">
-            <h3 style="color:white;text-align:center">Sign Up</h3>        
+            <h3 style="color:white;text-align:center">Register Team</h3>        
             
-          <label class="input-title" for="name">Name:</label>
-          <input class="req" type="textbox" name="name" placeholder="Enter your name"/>
-          <span class="err-msg">Name is required</span>
+          <label class="input-title" for="teamName">Team Name:</label>
+          <input class="req" type="textbox" name="teamName" placeholder="Enter Team name"/>
+          <span class="err-msg">Team Name is required</span>
 
-          <label class="input-title" for="email">Email Id:</label>
-          <input class="req email" type="email" name="email" placeholder="Enter your email id"/>
-          <span class="err-msg">Email is required</span>
+          <label class="input-title" for="introducedOn">Introduced Year:</label>
+          <input class="req" type="date" name="introducedOn" placeholder="Enter introduced year of team"/>
+          <span class="err-msg"></span>
 
-          <label class="input-title" for="mobile">Contact No:</label>
-          <input class="req mob" type="textbox" name="mobile" placeholder="Enter your mobile no" onkeypress="onlyNumber(event)"/>
-          <span class="err-msg">Enter 10 digits number</span>
-
-          <label class="input-title" for="dob">Date of Birth:</label>
-          <input class="req" type="date" name="dob" placeholder="Enter Date of Birth"/>
-          <span class="err-msg">Date is not valid</span>
-
-          <label class="input-title" for="address">address</label>
-          <input class="req" type="textbox" name="address" placeholder="Enter address"/>
-          <span class="err-msg">address requied</span>
-
-          <label class="input-title" for="role">Role</label>
+          <label class="input-title" for="complete">Completion Date:</label>
+          <input class="req" type="date" name="complete" placeholder="Enter Contest completion Date"/>
+          <span class="err-msg"></span>
+		  
+		  <label class="input-title" for="type">Contest Type:</label>
           <select>
-            <option value="1">Team Owner</option>
-            <option value="2">Contest Owner</option>
-          </select>
-          <span class="err-msg">role is requied</span>
+		     <option value="1">One Day</option>
+			 <option value="1">Long Term</option>
+		  </select>
+          <span class="err-msg"></span>
+		  
+		  <label class="input-title" for="size">Starting Date:</label>
+          <input class="req" type="number" name="size" placeholder="Enter Contest size"/>
+          <span class="err-msg"></span>
 
-          <label class="input-title" for="password">Password</label>
-          <input id="pass" class="req" type="textbox" name="password" placeholder="Enter password"/>
-          <span class="err-msg">Password required</span>
-
-          <label class="input-title" for="confirm">Confirm Password</label>
-          <input class="req" type="textbox" name="confirm" placeholder="Confirm" onchange="matchPasswords(event)"/>
-          <span class="err-msg">Passwords mismatch</span>
-
-          <input type="submit" class="btn" value="Register"/>
+          <input type="submit" class="contest-btn" value="Create Ccontest"/>
 
         </form> 
      </div>
    </div>
    <div style="padding:40px 0;"></div>
+</div>
 </div>
 <script>
      function checkError(event){
@@ -246,6 +250,10 @@ function onlyNumber(e){
            else
              event.target.nextElementSibling.style.display="none";
         }
+ 
+       document.getElementById("user").innerHTML+=sessionStorage.getItem("username");
+       
+       
    </script>
 </body>
 </html>
