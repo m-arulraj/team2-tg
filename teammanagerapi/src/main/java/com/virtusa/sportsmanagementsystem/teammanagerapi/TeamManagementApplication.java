@@ -17,7 +17,7 @@ public class TeamManagementApplication
 	private static Logger logger = Logger.getLogger(TeamManagementApplication.class.getClass());
     public static void main( String[] args )
     {
-    	PropertyConfigurator.configure("src/main/resource/log4j.properties");
+    	PropertyConfigurator.configure("src/main/resources/log4j.properties");
     	logger.info("Team Management Application is started");
         SpringApplication.run(TeamManagementApplication.class, args);
     }
