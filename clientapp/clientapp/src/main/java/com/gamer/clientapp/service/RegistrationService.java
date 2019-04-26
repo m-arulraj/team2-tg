@@ -33,25 +33,36 @@ public class RegistrationService {
 	}
 	public Team registerTeam(Team team) {
 		ResponseEntity<Team> registerTeam = template.postForEntity(EndPointConstraint.TEAMMANAGEMENT_URL, team, Team.class);
-		System.out.println("regt" +registerTeam.getBody());
-		System.out.println("regt" +registerTeam.getStatusCodeValue());
-
 		return registerTeam.getBody();
 	}
 	public Player registerPlayer(Player player) {
 		String uri = "/player";
-		ResponseEntity<Player> registerPlayer = template.postForEntity(EndPointConstraint.TEAMMANAGEMENT_URL+ uri, player, Player.class);
-		System.out.println("regt" +registerPlayer.getBody());
-		System.out.println("regt" +registerPlayer.getStatusCodeValue());
-
+		ResponseEntity<Player> registerPlayer = template.postForEntity(EndPointConstraint.TEAMMANAGEMENT_URL+ uri, player, Player.class);	
 		return registerPlayer.getBody();
 	}
 	public void updateTeam(int id,Team team) {
-		System.out.println("upteam" + EndPointConstraint.TEAMMANAGEMENT_URL+"/"+id);
 		template.put(EndPointConstraint.TEAMMANAGEMENT_URL+"/"+id, team);
 	}
 	public void updateplayer(int id,Player player) {
-		System.out.println("upteam" + EndPointConstraint.TEAMMANAGEMENT_URL+"/player/"+id);
 		template.put(EndPointConstraint.TEAMMANAGEMENT_URL+"/player/"+id, player);
 	}
+	
+	  public List<Team> getSearchedTeamList(String search){
+		  System.out.println(search);
+		  String uri = "/search/";
+	  ResponseEntity<List<Team>> teamList =
+	  template.exchange(EndPointConstraint.TEAMMANAGEMENT_URL+uri+search,
+	  HttpMethod.GET, null, new ParameterizedTypeReference<List<Team>>() { }); 
+	 return  teamList.getBody();
+	  }
+	 
+	  public List<Player> getSearchedPlayerList(String search){
+		  String uri = "/player/search/";
+	  ResponseEntity<List<Player>> playerList =
+	  template.exchange(EndPointConstraint.TEAMMANAGEMENT_URL+uri+search,
+	  HttpMethod.GET, null, new ParameterizedTypeReference<List<Player>>() { }); 
+	 return  playerList.getBody();
+	  }
+	 
+	
 }

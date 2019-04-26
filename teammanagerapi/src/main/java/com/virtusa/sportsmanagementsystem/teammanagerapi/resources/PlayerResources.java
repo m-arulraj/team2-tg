@@ -1,6 +1,7 @@
 package com.virtusa.sportsmanagementsystem.teammanagerapi.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -66,6 +67,14 @@ public class PlayerResources {
 		Player p = playerservice.updateplayer(id,player);
 		return p != null ? new ResponseEntity<Player>(p, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping("/player/search/{search}")
+	public List<Player> getSearchedTeamList(@PathVariable(name="search")  String search) {
+		List<Player> playerList = playerservice.getPlayerList();
+		List<Player> serchedTeams =playerList.stream().
+				filter(p->(p.getPlayerName().contains(search)||p.getPlayerName().contains(search.toUpperCase())||p.getPlayerName().contains(search.toLowerCase()))).
+				collect(Collectors.toList());
+		return serchedTeams;
 	}
 
 }

@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.virtusa.sportsmanagementsystem.userapi.domain.User;
@@ -22,6 +23,7 @@ public class UserRegistrationService {
 	UserRepository userRepository;
 	@Autowired
 	UserRoleRepository userRoleRepository;
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	private static Logger logger =Logger.getLogger(UserRegistrationService.class);
 	
 	UserRole userRole;
@@ -32,6 +34,8 @@ public class UserRegistrationService {
 		logger.debug("userServices for registering user is invoked");
 	User user =userRole.getUser();
 		user.setUsername(user.getEmail());
+		user.setEnabled(1);
+		user.setPassword(encoder.encode(user.getPassword()));
 		User u1 = userRepository.save(user);
 		userRole.setUser(u1);
 		/*

@@ -116,7 +116,7 @@
         <form method="post" action="" onsubmit="formSubmission(event)">
             <h3 style="color:white;text-align:center">Player Updation</h3>                    
           <label class="input-title" for="playerName">Player Name:</label>
-          <input class="req"  name="playerName" placeholder="Enter Team name"/>
+          <input class="req"  name="playerName" placeholder="Enter player name"/>
           <span class="err-msg">Team Name is required</span>          
           
            <label class="input-title" for="playerRole">player Role:</label>

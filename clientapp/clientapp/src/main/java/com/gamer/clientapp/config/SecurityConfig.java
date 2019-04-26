@@ -41,17 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http
-				.authorizeRequests().antMatchers("/", "/register").permitAll()
-				.antMatchers("/team/**","/contest/**").hasAnyRole("TEAM_MANAGER","CONTEST_OWNER","SCOREBOARD_MANAGER").anyRequest()
-				.authenticated().and().formLogin().successHandler(clientAuthenticationProvider)
-				.failureUrl("/login?error=true").and().logout()
-				.invalidateHttpSession(true).permitAll().and().exceptionHandling().accessDeniedPage("/403").and().csrf()
-				.disable();
-		 
-
+	/*
+	 * http .authorizeRequests().antMatchers("/",
+	 * "/register","/searchcontoller","/signup").permitAll()
+	 * .antMatchers("/team/**","/contest/**").hasAnyRole("TEAM_MANAGER",
+	 * "CONTEST_OWNER","SCOREBOARD_MANAGER").anyRequest()
+	 * .authenticated().and().formLogin().successHandler(
+	 * clientAuthenticationProvider) .failureUrl("/login?error=true").and().logout()
+	 * .invalidateHttpSession(true).permitAll().and().exceptionHandling().
+	 * accessDeniedPage("/403").and().csrf() .disable();
+	 * 
+	 * 
+	 * }
+	 */
 	}
-	
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {

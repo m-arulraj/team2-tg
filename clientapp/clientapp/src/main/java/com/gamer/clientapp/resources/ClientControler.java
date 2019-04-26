@@ -22,12 +22,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gamer.clientapp.domain.Player;
+import com.gamer.clientapp.domain.Team;
 import com.gamer.clientapp.domain.User;
 import com.gamer.clientapp.domain.UserRole;
 import com.gamer.clientapp.service.RegistrationService;
@@ -40,7 +44,7 @@ public class ClientControler {
 	
 	@GetMapping(value="/")
 	public String getHome() {
-		return "home";
+		return "search-result";
 	}
 	
 	@GetMapping(value="/register")
@@ -90,20 +94,18 @@ public class ClientControler {
 		return "liveMatch";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginPage(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout, Model model) {
-		
-		String errorMessge = null;
-		if (error != null) {
-			errorMessge = "Username or Password is incorrect !!";
-		}
-		if (logout != null) {
-			errorMessge = "You have been successfully logged out !!";
-		}
-		model.addAttribute("errorMessge", errorMessge);
-		return "login";
-	}
+	/*
+	 * @RequestMapping(value = "/login", method = RequestMethod.GET) public String
+	 * loginPage(@RequestParam(value = "error", required = false) String error,
+	 * 
+	 * @RequestParam(value = "logout", required = false) String logout, Model model)
+	 * {
+	 * 
+	 * String errorMessge = null; if (error != null) { errorMessge =
+	 * "Username or Password is incorrect !!"; } if (logout != null) { errorMessge =
+	 * "You have been successfully logged out !!"; }
+	 * model.addAttribute("errorMessge", errorMessge); return "login"; }
+	 */
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
@@ -151,4 +153,25 @@ public class ClientControler {
 		   return new ResponseEntity<String>(name, responseHeaders, HttpStatus.CREATED);
 		 
 		}
+	@PostMapping(value="/searchcontoller")
+		public String getSearchResults(@RequestParam("search") String search,Model model) {
+		System.out.println(search);
+		List<Team> teamList = regservices.getSearchedTeamList(search);
+		
+		List<Player> playerList = regservices.getSearchedPlayerList(search);
+		model.addAttribute("teamList", teamList);
+		model.addAttribute(playerList);
+			return "search-result";
+		}
+	@GetMapping(value="/searchcontoller")
+	public String SearchResults(@RequestParam("search") String search,Model model) {
+	System.out.println(search);
+	List<Team> teamList = regservices.getSearchedTeamList(search);
+	
+	List<Player> playerList = regservices.getSearchedPlayerList(search);
+	model.addAttribute("teamList", teamList);
+	model.addAttribute(playerList);
+		return "search-result";
+	}
+
 }

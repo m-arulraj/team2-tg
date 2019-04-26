@@ -119,7 +119,7 @@
         <form method="post" action="" onsubmit="formSubmission(event)">
             <h3 style="color:white;text-align:center">Player Registration</h3>                    
           <label class="input-title" for="playerName">Player Name:</label>
-          <input class="req"  name="playerName" placeholder="Enter Team name"/>
+          <input class="req"  name="playerName" placeholder="Enter Player name"/>
           <span class="err-msg">Team Name is required</span>          
           
            <label class="input-title" for="playerRole">player Role:</label>

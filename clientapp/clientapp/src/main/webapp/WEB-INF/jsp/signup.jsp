@@ -124,7 +124,7 @@ input, select {
 		<div class="mid-wrapper">
 			<div>
 				<div class="form-container">
-						<form:form method="post" action="/signupController"
+						<form:form method="post" action="/signup"
 							modelAttribute="userRole">
 							<h3 style="color: white; text-align: center">Sign Up</h3>
 

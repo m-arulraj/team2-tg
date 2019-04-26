@@ -28,7 +28,7 @@ public class TeamController {
 
 	@Autowired
 	RegistrationService registrationService;
-	@PostMapping("/signupController")
+	@PostMapping("/signup")
 	public ModelAndView registerUser(@ModelAttribute("userRole")
 			UserRole userRole) {
 		ModelAndView model = new ModelAndView();

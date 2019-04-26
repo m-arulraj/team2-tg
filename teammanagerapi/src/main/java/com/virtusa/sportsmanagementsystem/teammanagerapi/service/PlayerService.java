@@ -46,5 +46,9 @@ public class PlayerService {
 		player.setId(id);
 			return playerRepository.save(player);
 	}
+	public List<Player> getPlayerList() {
+		
+			return playerRepository.findAll();
+	}
 
 }

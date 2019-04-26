@@ -187,7 +187,7 @@ function loadPerformance(){
 	let xhttp=new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
-	    	performance = JSON.parse(this.response);
+	    	performance = JSON.stringify(this.response);
 	    	setPerformance(performance);
 	    }
 	  };
@@ -202,7 +202,7 @@ function setPerformance(performance){
 		                     "<h4 class='field'>"+performance.loss+"</h4>"+
 		                     "<h4 class='field'>"+performance.noResult+"</h4>"+
 		                     "<h4 class='field'>"+performance.points+"</h4>"
-}
+}	
 
 loadPerformance();
 

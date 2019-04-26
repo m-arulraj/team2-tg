@@ -123,11 +123,8 @@
                         <h4 class="field">Batting Style:</h4>
                         <h4 class="field">Bowling Style:</h4>
                      </div>
-                     <div class="column7">
-                        <h4 class="field">Ranchi</h4>
-                        <h4 class="field">Batsman</h4>
-                        <h4 class="field">Right Handed</h4>
-                        <h4 class="field">Right Handed</h4>
+                     <div class="column7 player-container">
+                        
                      </div>
                   </div>
 <!--                 </div> -->
@@ -198,7 +195,30 @@ function setPerformance(performance){
     let bowlStr=" <tr><td>"+performance.matches+"</td><td>"+performance.overBowled+"</td><td>"+performance.wickets+"</td></tr>";
            bowl.innerHTML+=bowlStr;
 }
-loadPerformance();
+loadPerformance(); 
+function loadPlayer(){
+	let xhttp=new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	     palyer = JSON.parse(this.response);
+	     setPlayer(palyer);
+	    }
+	  };
+	 xhttp.open("get","http://localhost:7070/api/team/player/"+pid,true); 
+	 xhttp.send();
+}
+
+function setPlayer(palyer){
+	
+	elements=document.getElementsByClassName("column7 player-container")[0];
+	
+	elements.innerHTML+="<h4 class='field'>"+palyer.birthPlace+"</h4>"+
+	                     "<h4 class='field'>"+palyer.playerRole+"</h4>"+
+	                     "<h4 class='field'>"+palyer.battingStyle+"</h4>"+
+	                     "<h4 class='field'>"+palyer.bowlingStyle+"</h4>"
+}
+
+loadPlayer();
 
 </script>
 
