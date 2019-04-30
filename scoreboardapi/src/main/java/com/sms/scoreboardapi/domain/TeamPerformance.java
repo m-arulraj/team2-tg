@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -24,6 +25,8 @@ public class TeamPerformance {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private Long id;
+	@Transient
+	private String teamName;
 	@Column(name="matches_played")
 	private int matchesPlayed;
 	@Column(name="matches_win")
@@ -93,6 +96,14 @@ public class TeamPerformance {
 
 	public void setPoints(int points) {
 		this.points = points;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
 	}
 
 }

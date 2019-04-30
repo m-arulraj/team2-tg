@@ -42,7 +42,7 @@ public class Contest {
 	
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name="user_id")	
-	private User owner;
+	private Users owner;
 	
 	@OneToMany(mappedBy="contest",fetch=FetchType.EAGER)
     private Set<Team> teams;
@@ -98,11 +98,11 @@ public class Contest {
 		this.noOfTeams = noOfTeams;
 	}
 
-	public User getOwner() {
+	public Users getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(Users owner) {
 		this.owner = owner;
 	}
 }

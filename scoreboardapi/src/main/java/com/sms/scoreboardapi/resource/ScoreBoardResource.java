@@ -64,14 +64,20 @@ public class ScoreBoardResource {
 
 		logger.info("updating match score");
 		logger.debug("controller invoked for updating score");
-		if(errors.hasErrors()) {
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-		}
-		else {
-			service.updateScore(ballScore);
-			logger.debug("updated score");
-			logger.info("updated score successfully");
-			return new ResponseEntity<String>(HttpStatus.OK);
+		try {
+			if(errors.hasErrors()) {
+				return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			}
+			else {
+				service.updateScore(ballScore);
+				logger.debug("updated score");
+				logger.info("updated score successfully");
+				return new ResponseEntity<String>(HttpStatus.OK);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.info("something went wrong..plz try again later--->"+e.getMessage());
+			return new ResponseEntity<String>(HttpStatus.METHOD_FAILURE);
 		}
 	}
 	
@@ -114,7 +120,19 @@ public class ScoreBoardResource {
 	@RequestMapping(value="/highest-scorer/{contestId}",method=RequestMethod.GET)
 	public Player getHighestScorer(@PathVariable(name="contestId") Long contestId) {
 		
+		logger.info("get highest scorer");
 		return service.getHighestScorer(contestId);
 	}
 	
+	@RequestMapping(value="team-performance",method=RequestMethod.GET)
+	public List<TeamPerformance> getAllTeamPerformance(){
+		logger.info("getting all teams performance");
+		return service.getAllTeamPerformance();
+	}
+	@RequestMapping(value="team-match-performance/{teamId}/{scheduleId}",method=RequestMethod.GET)
+	public MatchScore getTeamMatchPerformance(@PathVariable(name="teamId")Long teamId,@PathVariable(name="scheduleId")Long scheduleId) {
+		logger.info("getting team match performance");
+		logger.debug(service.getTeamMatchPerformance(teamId, scheduleId));
+		return service.getTeamMatchPerformance(teamId, scheduleId);
+	}
 }

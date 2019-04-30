@@ -3,6 +3,7 @@ package com.sms.scoreboardapi.service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -150,7 +151,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		if(ballScore.getMatchStatus().equalsIgnoreCase("on-going")) {
 			battingMatchScore.setMatchStatus(ballScore.getMatchStatus());
 		}else if(ballScore.getMatchStatus().equalsIgnoreCase("batting team wins")) {
-			battingMatchScore.setMatchStatus("won");
+			battingMatchScore.setMatchStatus("win");
 		}else if(ballScore.getMatchStatus().equalsIgnoreCase("batting team looses")){
 			battingMatchScore.setMatchStatus("loss");
 		}else {
@@ -370,7 +371,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		//set data to batting team performance
 		battingTeamPerformance.setMatchesPlayed(matchScoreRepository.countByTeamId(battingTeam.getId()));
 		battingTeamPerformance.setLoss(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "loss"));
-		battingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "won"));
+		battingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "win"));
 		logger.debug("bating team points ------------------------------------>>>>>>>>>>>>"+battingTeamPerformance.getWin()*2+battingTeamPerformance.getNoResult());
 		battingTeamPerformance.setPoints((int)(battingTeamPerformance.getWin()*2+battingTeamPerformance.getNoResult()));
 		battingTeamPerformance.setNoResult(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "tied"));
@@ -378,7 +379,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		//set data to bowling Team
 		bowlingTeamPerformance.setMatchesPlayed(matchScoreRepository.countByTeamId(bowlingTeam.getId()));
 		bowlingTeamPerformance.setLoss(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "loss"));
-		bowlingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "won"));
+		bowlingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "win"));
 		logger.debug("bowling team points ------------------------------------>>>>>>>>>>>>"+bowlingTeamPerformance.getWin()*2+bowlingTeamPerformance.getNoResult());
 		bowlingTeamPerformance.setPoints(bowlingTeamPerformance.getWin()*2+bowlingTeamPerformance.getNoResult());
 		bowlingTeamPerformance.setNoResult(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "tied"));
@@ -447,7 +448,9 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		
 		logger.debug("service invoked for getting team performance");
 		
-		return teamPerformanceRepository.findByTeamId(teamId);
+		TeamPerformance teamPerformance= teamPerformanceRepository.findByTeamId(teamId);
+		teamPerformance.setTeamName(teamRepository.findByid(teamPerformance.getTeam().getId()));
+		return teamPerformance;
 	}
 
 	public Player getHighestScorer(Long contestId) {
@@ -468,5 +471,29 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		}
 	}
 	
+	//get all teams performance
+	public List<TeamPerformance> getAllTeamPerformance(){
+		
+		logger.debug("service invoked for getting all teams performance");
+		List<TeamPerformance> performances=teamPerformanceRepository.findAll();
+		performances.stream().forEach(per->{
+			per.setTeamName(teamRepository.findByid(per.getTeam().getId()));
+		});
+		
+		performances=performances.stream().sorted(Comparator.comparing(TeamPerformance::getPoints).reversed()).collect(Collectors.toList());
+		performances.forEach(per->{
+			logger.debug("points----------->"+per.getPoints());
+		});
+		return performances;
+	}
 	
+	//get teams match performance
+	public MatchScore getTeamMatchPerformance(Long teamId,Long scheduleId) {
+		battingMatchScore=null;
+		optBatMatchScore=matchScoreRepository.findByTeamIdAndScheduleId(teamId,scheduleId);
+		if(optBatMatchScore.isPresent()) {
+			battingMatchScore=optBatMatchScore.get();
+		}
+		return battingMatchScore;
+	}
 }
