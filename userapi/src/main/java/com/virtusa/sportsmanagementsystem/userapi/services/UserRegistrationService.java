@@ -1,11 +1,13 @@
 package com.virtusa.sportsmanagementsystem.userapi.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.virtusa.sportsmanagementsystem.userapi.domain.User;
@@ -21,6 +23,7 @@ public class UserRegistrationService {
 	UserRepository userRepository;
 	@Autowired
 	UserRoleRepository userRoleRepository;
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	private static Logger logger =Logger.getLogger(UserRegistrationService.class);
 	
 	UserRole userRole;
@@ -31,6 +34,8 @@ public class UserRegistrationService {
 		logger.debug("userServices for registering user is invoked");
 	User user =userRole.getUser();
 		user.setUsername(user.getEmail());
+		user.setEnabled(1);
+		user.setPassword(encoder.encode(user.getPassword()));
 		User u1 = userRepository.save(user);
 		userRole.setUser(u1);
 		/*
@@ -83,13 +88,16 @@ public class UserRegistrationService {
 	public User getUser(String username) {
 		logger.info("loggerServices for getting  user based on username is started");
 		logger.debug("userServices for getting  user based on username user is invoked");
-		User user = userRepository.getUsesr(username);
+		User user = userRepository.getUser(username);
 		return user;
 	}
 	public UserRole getUserRole(String username) {
-		User user = userRepository.getUsesr(username);
+		User user = userRepository.getUser(username);
 		UserRole userRole = userRoleRepository.findUserRole(user);
 		return userRole; 
+	}
+	public List<String> getUserRoles() {
+		return userRoleRepository.findUserRoles();
 	}
 	
 	

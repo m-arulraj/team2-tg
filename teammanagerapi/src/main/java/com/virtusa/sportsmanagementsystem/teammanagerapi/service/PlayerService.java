@@ -19,7 +19,8 @@ public class PlayerService {
 	PlayerRepository playerRepository;
 	
 	public Player registerPlayer(Player player) {
-		Team team = teamRepository.getTeam(player.getTeam().getTeamName());
+		Team team = teamRepository.findById(player.getTeam().getId()).get();
+		Team t = teamRepository.getTeam(player.getTeam().getTeamName());
 		if (team != null) {
 			player.setTeam(team);
 			teamRepository.save(team);
@@ -36,8 +37,18 @@ public class PlayerService {
 	public List<Player> getPlayerListBasedOnTeam(int id){
 		Team team = teamRepository.findById(id).get();
 		List<Player> playerList = playerRepository.getplayersBasedOnteam(team);
-		playerList.forEach((p)->System.out.println(p));
 		return playerList;
+	}
+	public Player getPlayerListBasedPlayerId(int id) {
+		return playerRepository.findById(id).get();
+	}
+	public Player updateplayer(int id, Player player) {
+		player.setId(id);
+			return playerRepository.save(player);
+	}
+	public List<Player> getPlayerList() {
+		
+			return playerRepository.findAll();
 	}
 
 }

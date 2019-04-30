@@ -134,7 +134,7 @@
          </div>
          </div>
          <div class="col-sm-6 sec" style="">
-         <h4 style="color:green;text-align:center">Chennai Super Kings</h4>
+         <h4 style="color:green;text-align:center">Players:</h4>
          <div class="content-wrapper">
             <div class="summary">
                <div class="batting part">  
@@ -168,7 +168,7 @@ function loadTeam(){
 		 setTeam(allPlayers);
 	    }
 	  };
-	xhttp.open("get","http://10.5.113.87:8091/api/team/playersBasedOnTeam?id="+id,true);
+	xhttp.open("get","http://localhost:7070/api/team/playersBasedOnTeam?id="+id,true);
 	xhttp.send();
 }
 
@@ -191,7 +191,7 @@ function loadPerformance(){
 	    	setPerformance(performance);
 	    }
 	  };
-	xhttp.open("get","http://10.5.113.66:9090/api/scoreboard/matchscore/team-performance/"+id,true);
+	xhttp.open("get","http://localhost:7070/api/scoreboard/matchscore/team-performance/"+id,true);
 	xhttp.send();
 }
 

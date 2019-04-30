@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	ClientAuthenticationProvider clientAuthenticationProvider;
 	
 	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
 		/*auth.inMemoryAuthentication().withUser("user").password("{noop}password").roles("USER")
 		.and().withUser("koustuv").password("{noop}password").roles("USER");*/
@@ -42,21 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http
-		    .authorizeRequests()
-		    .antMatchers("/contest/create","/fgx")
-		    .hasAnyRole("USER", "ADMIN")
-		    .and()
-		    .formLogin()
-		    .permitAll()
-		    .loginPage("/login")
-		    .defaultSuccessUrl("/")
-		    .failureUrl("/login?error=true")
-		    .and() 
-		    .logout() 
-		    .logoutSuccessUrl("/login?logout=true")
-		    .invalidateHttpSession(true).permitAll().and().exceptionHandling()
-		    .accessDeniedPage("/403")
-		    .and() .csrf() .disable();
+				.authorizeRequests().antMatchers("/", "/register").permitAll()
+				.antMatchers("/team/**","/contest/**").hasAnyRole("TEAM_MANAGER","CONTEST_OWNER","SCOREBOARD_MANAGER").anyRequest()
+				.authenticated().and().formLogin().successHandler(clientAuthenticationProvider)
+				.failureUrl("/login?error=true").and().logout()
+				.invalidateHttpSession(true).permitAll().and().exceptionHandling().accessDeniedPage("/403").and().csrf()
+				.disable();
 		 
 
 	}

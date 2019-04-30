@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class User {
 	@Id
 	@GeneratedValue
@@ -42,7 +42,6 @@ public class User {
 	private String email;
 	
 	@NotEmpty(message="User name should not be empty")
-    @Size(min =5, max = 8, message="the length of password should be in between 5 and 8")
 	@Column(name="password")
 	private String password;
 	

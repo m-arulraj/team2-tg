@@ -12,5 +12,5 @@ import com.virtusa.sportsmanagementsystem.userapi.domain.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
 	@Query("select u from User u where u.username=:username")
-	 User getUsesr(@Param("username") String username);
+	 User getUser(@Param("username") String username);
 }
