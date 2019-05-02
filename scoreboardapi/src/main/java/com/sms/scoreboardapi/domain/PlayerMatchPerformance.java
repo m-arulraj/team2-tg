@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -26,6 +27,8 @@ public class PlayerMatchPerformance {
 	private Long id;
 	@Column(name="schedule_id")
 	private Long scheduleId;
+	@Transient
+	private String playerName;
 	@Column(name="runs_scored")
 	private int runsScored;
 	@Column(name="fours")
@@ -133,5 +136,13 @@ public class PlayerMatchPerformance {
 
 	public void setScheduleId(Long scheduleId) {
 		this.scheduleId = scheduleId;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
 	}
 }

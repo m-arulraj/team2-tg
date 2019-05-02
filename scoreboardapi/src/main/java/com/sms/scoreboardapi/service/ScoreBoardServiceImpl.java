@@ -1,8 +1,10 @@
 package com.sms.scoreboardapi.service;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -19,6 +21,7 @@ import com.sms.scoreboardapi.domain.PlayerContestPerformance;
 import com.sms.scoreboardapi.domain.PlayerMatchPerformance;
 import com.sms.scoreboardapi.domain.Team;
 import com.sms.scoreboardapi.domain.TeamPerformance;
+import com.sms.scoreboardapi.domain.TeamsPlayerPerformanceReport;
 import com.sms.scoreboardapi.repository.MatchScoreRepository;
 import com.sms.scoreboardapi.repository.PlayerContestPerformanceRepository;
 import com.sms.scoreboardapi.repository.PlayerMatchPerformanceRepository;
@@ -449,8 +452,13 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		logger.debug("service invoked for getting team performance");
 		
 		TeamPerformance teamPerformance= teamPerformanceRepository.findByTeamId(teamId);
-		teamPerformance.setTeamName(teamRepository.findByid(teamPerformance.getTeam().getId()));
-		return teamPerformance;
+		if(teamPerformance==null) {
+			return null;
+		}else {
+			teamPerformance.setTeamName(teamRepository.findByid(teamPerformance.getTeam().getId()));
+			return teamPerformance;
+		}
+		
 	}
 
 	public Player getHighestScorer(Long contestId) {
@@ -495,5 +503,63 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 			battingMatchScore=optBatMatchScore.get();
 		}
 		return battingMatchScore;
+	}
+	
+	//get player report card
+	public Set<TeamsPlayerPerformanceReport> getTeamsPlayerPerformanceReport(Long teamId,Long contestId) {
+		
+		logger.debug("service invoked to get report card");
+		
+		Team team=null;
+		
+		final Set<TeamsPlayerPerformanceReport> reports=new HashSet<TeamsPlayerPerformanceReport>();
+		
+		//get all the players of the team
+		Optional<Team> optTeam=teamRepository.findById(teamId);
+		
+		if(optTeam.isPresent()) {
+			team=optTeam.get();
+			logger.debug("got team object");
+		}
+		Set<Player> players=team.getPlayers();
+		logger.debug("got players");
+		players.stream().forEach(pl->{
+			PlayerContestPerformance playerContestPerformance=playerContestPerformanceRepository.findByPlayerIdAndContestId(pl.getId(), contestId);
+			logger.debug("got player contest performance---------------->"+playerContestPerformance);
+			TeamsPlayerPerformanceReport report= new TeamsPlayerPerformanceReport();
+			report.setPlayerName(pl.getPlayerName());
+			if(playerContestPerformance!=null) {
+				report.setRunsScored(playerContestPerformance.getRunsScored());
+				report.setWickets(playerContestPerformance.getWickets());
+				reports.add(report);
+			}else {
+				report.setRunsScored(0);
+				report.setWickets(0);
+				reports.add(report);
+			}
+			
+		});
+		logger.debug("created and initialized report and returning");
+		return reports;
+	}
+
+	@Override
+	public Set<PlayerMatchPerformance> getPlayerEachMatchPerformanceReport(Long playerId) {
+		
+		logger.debug("service invoked for getting players each match performance report");
+		
+		Optional<Player> optPlayer=null;
+		Player player=null;
+		
+		optPlayer=playerRepository.findById(playerId);
+		if(optPlayer.isPresent()) {
+			player=optPlayer.get();
+		}
+		final String playerName=player.getPlayerName();
+		Set<PlayerMatchPerformance> matchReport=playerMatchPerformanceRepository.findByPlayerId(playerId);
+		
+		matchReport.stream().forEach(rep->rep.setPlayerName(playerName));
+		return matchReport;
+		
 	}
 }
