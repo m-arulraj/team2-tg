@@ -1,5 +1,6 @@
 package com.virtusa.sportsmanagementsystem.teammanagerapi.resources;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,13 +50,16 @@ public class PlayerResources {
 	@GetMapping("/players")
 	public List<Player> playerList(@RequestParam("playerRole") String playerRole){
 		List<Player> playerList = playerservice.getPlayerListBasedOnRole(playerRole);
-		return playerList;
+		List<Player> sortedTeamList = playerList.stream().sorted(Comparator.comparing(Player::getPlayerName)).collect(Collectors.toList());
+		return sortedTeamList;
+		
 	}
 	
 	@GetMapping("/playersBasedOnTeam")
 	public List<Player> playerListBasedOnTeam(@RequestParam("id") int id){
 		List<Player> playerList = playerservice.getPlayerListBasedOnTeam(id);
-		return playerList;
+		List<Player> sortedTeamList = playerList.stream().sorted(Comparator.comparing(Player::getPlayerName)).collect(Collectors.toList());
+		return sortedTeamList;
 	}
 	@GetMapping("/player/{id}")
 	public Player getplayer(@PathVariable(name="id") int id){
@@ -72,9 +76,15 @@ public class PlayerResources {
 	public List<Player> getSearchedTeamList(@PathVariable(name="search")  String search) {
 		List<Player> playerList = playerservice.getPlayerList();
 		List<Player> serchedTeams =playerList.stream().
-				filter(p->(p.getPlayerName().contains(search)||p.getPlayerName().contains(search.toUpperCase())||p.getPlayerName().contains(search.toLowerCase()))).
+				filter(p->(p.getPlayerName().contains(search)||p.getPlayerName().contains(search.toUpperCase())||p.getPlayerName().toLowerCase().contains(search)||p.getPlayerName().contains(search.toLowerCase()))).
 				collect(Collectors.toList());
 		return serchedTeams;
+	}
+	@GetMapping("/palyer/sorted")
+	public List<Player> getSortedPlayers() {
+		List<Player> playerList = playerservice.getPlayerList();
+		List<Player> sortedTeamList = playerList.stream().sorted(Comparator.comparing(Player::getPlayerName)).collect(Collectors.toList());
+		return sortedTeamList;
 	}
 
 }

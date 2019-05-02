@@ -20,19 +20,19 @@ public class User {
 	@Column(name="id")
 	private int id;
 	
-	@NotEmpty(message="player name should not be empty")
+	@NotEmpty(message="User name should not be empty")
 	@Pattern(regexp="[^0-9]*", message="Numbers are not accepted")
 	@Column(name="user_name")
 	private String userName;
 	
-	@NotEmpty(message="User name should not be empty")
+	@NotEmpty(message="User address should not be empty")
 	@Column(name="user_address")
 	private String address;
 	 
 	@Column(name="user_mobile")
 	private Long mobileNumber;
 	
-	@NotEmpty(message="User name should not be empty")
+	@NotEmpty(message="User Date Of Birth should not be empty")
 	@Column(name="user_dob")
 	private String userDob;
 	
@@ -41,7 +41,7 @@ public class User {
 	@Column(name="email")
 	private String email;
 	
-	@NotEmpty(message="User name should not be empty")
+	@NotEmpty(message="password should not be empty")
 	@Column(name="password")
 	private String password;
 	

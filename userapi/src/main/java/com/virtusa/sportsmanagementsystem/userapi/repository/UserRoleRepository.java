@@ -22,6 +22,6 @@ public interface UserRoleRepository extends JpaRepository<UserRole	, Integer>{
 	@Query("select u from UserRole u  where u.user = :user ")
 	 UserRole findUserRole(@Param("user") User user);
 	
-	@Query("select u.role from UserRole u ")
+	@Query("select u.authority from UserRole u ")
 	 List<String> findUserRoles();
 }

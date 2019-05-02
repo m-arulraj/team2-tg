@@ -18,23 +18,24 @@ public class UserRole {
 	@Column(name="id")
 	private int id;
 	@Column(name="authority")
-	private String role;
+	private String authority;
 	@Valid
 	@OneToOne
 	@JoinColumn(name="user_id")
 	private User user;
-	
+	@Column(name="username")
+	private String username;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getRole() {
-		return role;
+	public String getAuthority() {
+		return authority;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setAuthority(String role) {
+		this.authority = role;
 	}
 	public User getUser() {
 		return user;
@@ -42,9 +43,16 @@ public class UserRole {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	@Override
 	public String toString() {
-		return "UserRoles [id=" + id + ", role=" + role + ", user=" + user + "]";
+		return "UserRoles [id=" + id + ", Authority=" + authority + ", user=" + user + "]";
 	}
 	
 	

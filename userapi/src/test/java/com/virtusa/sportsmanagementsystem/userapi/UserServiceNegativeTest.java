@@ -41,7 +41,7 @@ public class UserServiceNegativeTest {
 		user.setEnabled(1);
 		UserRole userrole = new UserRole();
 		userrole.setId(3);
-		userrole.setRole("ScoreboardManager");
+		userrole.setAuthority("ScoreboardManager");
 		userrole.setUser(user);
 		 ResultActions result =mockMvc.perform(MockMvcRequestBuilders.post("/api/user") 
 				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userrole)) );
@@ -60,7 +60,7 @@ public class UserServiceNegativeTest {
 		user.setEnabled(1);
 		UserRole userrole = new UserRole();
 		userrole.setId(3);
-		userrole.setRole("ScoreboardManager");
+		userrole.setAuthority("ScoreboardManager");
 		userrole.setUser(user);
 		 ResultActions result =mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
 				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userrole)) );
@@ -79,7 +79,7 @@ public class UserServiceNegativeTest {
 		user.setEnabled(1);
 		UserRole userrole = new UserRole();
 		userrole.setId(3);
-		userrole.setRole("ScoreboardManager");
+		userrole.setAuthority("ScoreboardManager");
 		userrole.setUser(user);
 		 ResultActions result =mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
 				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userrole)) );

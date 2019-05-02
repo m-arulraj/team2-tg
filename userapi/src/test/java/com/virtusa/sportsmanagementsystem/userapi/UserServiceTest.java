@@ -42,7 +42,7 @@ public class UserServiceTest {
 		user.setEnabled(1);
 		UserRole userrole = new UserRole();
 		userrole.setId(4);
-		userrole.setRole("ROLE_CONTEST_OWNER");
+		userrole.setAuthority("ROLE_CONTEST_OWNER");
 		userrole.setUser(user);
 		 ResultActions result =mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
 				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userrole)) );

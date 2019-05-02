@@ -38,6 +38,7 @@ public class UserRegistrationService {
 		user.setPassword(encoder.encode(user.getPassword()));
 		User u1 = userRepository.save(user);
 		userRole.setUser(u1);
+		userRole.setUsername(u1.getEmail());
 		/*
 		 * Optional<UserRole> ur = userRoleRepository.findById(userRole.getId());
 		 * if(ur.isPresent()) { this.userRole=ur.get();

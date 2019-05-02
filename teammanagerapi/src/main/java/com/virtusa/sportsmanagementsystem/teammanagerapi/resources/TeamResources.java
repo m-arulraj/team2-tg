@@ -1,7 +1,8 @@
 package com.virtusa.sportsmanagementsystem.teammanagerapi.resources;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.List;import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -59,7 +60,9 @@ public class TeamResources {
 	}
 	@GetMapping("/{contestId}")
 	public List<Team> getteamListBasedonContestId(@PathVariable(name="contestId") int contestId) {
-		return teamService.getteamlistBasedOnContestId(contestId);
+		List<Team> teamList= teamService.getteamlistBasedOnContestId(contestId);
+		List<Team> sortedTeamList = teamList.stream().sorted(Comparator.comparing(Team::getTeamName)).collect(Collectors.toList());
+		return sortedTeamList;
 	}
 	@PutMapping("/{id}")
 	public ResponseEntity<Team> updateTeam(@PathVariable(name="id") int id, @RequestBody Team team){
@@ -82,5 +85,12 @@ public class TeamResources {
 				collect(Collectors.toList());
 		return serchedTeams;
 	}
+	@GetMapping("/sorted")
+	public List<Team> getSortedTeams() {
+		List<Team> teamList = teamService.getteamlist();
+		List<Team> sortedTeamList = teamList.stream().sorted(Comparator.comparing(Team::getTeamName)).collect(Collectors.toList());
+		return sortedTeamList;
+	}
+
 
 }
