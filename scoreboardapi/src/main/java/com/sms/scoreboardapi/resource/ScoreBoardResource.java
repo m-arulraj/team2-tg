@@ -1,6 +1,7 @@
 package com.sms.scoreboardapi.resource;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -22,6 +23,7 @@ import com.sms.scoreboardapi.domain.Player;
 import com.sms.scoreboardapi.domain.PlayerContestPerformance;
 import com.sms.scoreboardapi.domain.PlayerMatchPerformance;
 import com.sms.scoreboardapi.domain.TeamPerformance;
+import com.sms.scoreboardapi.domain.TeamsPlayerPerformanceReport;
 import com.sms.scoreboardapi.service.ScoreBoardServiceImpl;
 
 @RestController
@@ -64,14 +66,20 @@ public class ScoreBoardResource {
 
 		logger.info("updating match score");
 		logger.debug("controller invoked for updating score");
-		if(errors.hasErrors()) {
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-		}
-		else {
-			service.updateScore(ballScore);
-			logger.debug("updated score");
-			logger.info("updated score successfully");
-			return new ResponseEntity<String>(HttpStatus.OK);
+		try {
+			if(errors.hasErrors()) {
+				return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			}
+			else {
+				service.updateScore(ballScore);
+				logger.debug("updated score");
+				logger.info("updated score successfully");
+				return new ResponseEntity<String>(HttpStatus.OK);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.info("something went wrong..plz try again later--->"+e.getMessage());
+			return new ResponseEntity<String>(HttpStatus.METHOD_FAILURE);
 		}
 	}
 	
@@ -80,8 +88,13 @@ public class ScoreBoardResource {
 		
 		logger.info("getting match score");
 		logger.debug("controller invoked for getting match score");
+		try {
+			return service.getMatchScore(scheduleId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
-		return service.getMatchScore(scheduleId);
 	}
 	
 	@RequestMapping(value="/player-match-performance/{playerId}/{scheduleId}",method=RequestMethod.GET)
@@ -89,8 +102,13 @@ public class ScoreBoardResource {
 		
 		logger.info("getting player match performance");
 		logger.debug("controller invoked for getting player match performance");
+		try {
+			return service.getPlayerMatchPerformance(playerId, scheduleId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
-		return service.getPlayerMatchPerformance(playerId, scheduleId);
 	}
 	
 	@RequestMapping(value="/player-contest-performance/{playerId}/{contestId}",method=RequestMethod.GET)
@@ -98,8 +116,13 @@ public class ScoreBoardResource {
 		
 		logger.info("getting player contest performance");
 		logger.debug("controller invoked for getting player contest performance");
+		try {
+			return service.getPlayerContestPerformance(playerId, contestId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
-		return service.getPlayerContestPerformance(playerId, contestId);
 	}
 	
 	@RequestMapping(value="/team-performance/{teamId}",method=RequestMethod.GET)
@@ -107,14 +130,82 @@ public class ScoreBoardResource {
 		
 		logger.info("getting team performance");
 		logger.debug("controller invoked for getting team performance");
+		try {
+			return service.getTeamPerformance(teamId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
-		return service.getTeamPerformance(teamId);
 	}
 	
 	@RequestMapping(value="/highest-scorer/{contestId}",method=RequestMethod.GET)
 	public Player getHighestScorer(@PathVariable(name="contestId") Long contestId) {
 		
-		return service.getHighestScorer(contestId);
+		logger.info("get highest scorer");
+		try {
+			return service.getHighestScorer(contestId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	@RequestMapping(value="team-performance",method=RequestMethod.GET)
+	public List<TeamPerformance> getAllTeamPerformance(){
+		logger.info("getting all teams performance");
+		try {
+			return service.getAllTeamPerformance();
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	@RequestMapping(value="team-match-performance/{teamId}/{scheduleId}",method=RequestMethod.GET)
+	public MatchScore getTeamMatchPerformance(@PathVariable(name="teamId")Long teamId,@PathVariable(name="scheduleId")Long scheduleId) {
+		logger.info("getting team match performance");
+		logger.debug(service.getTeamMatchPerformance(teamId, scheduleId));
+		try {
+			return service.getTeamMatchPerformance(teamId, scheduleId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	@RequestMapping(value="player-report/{teamId}/{contestId}",method=RequestMethod.GET)
+	public Set<TeamsPlayerPerformanceReport> getTeamsPlayerPerformanceReport(@PathVariable(name="teamId") Long teamId, @PathVariable(name="contestId")Long contestId) {
+		
+		logger.info("getting report card for player's contest performance");
+		logger.debug("controller invoked for getting report card");
+		logger.debug("team id->"+teamId);
+		logger.debug("contestId->"+contestId);
+		try {
+			return service.getTeamsPlayerPerformanceReport(teamId, contestId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+	}
+	
+	@RequestMapping(value="player-all-match-report/{playerId}",method=RequestMethod.GET)
+	public Set<PlayerMatchPerformance> getPlayerEachMatchPerformanceReport(@PathVariable(name="playerId")Long playerId) {
+		
+		logger.info("getting report card for player's all match performance");
+		logger.debug("controller invoked for getting report card");
+		logger.debug("player id->"+playerId);
+		try {
+			return service.getPlayerEachMatchPerformanceReport(playerId);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
 	}
 	
 }

@@ -1,8 +1,11 @@
 package com.sms.scoreboardapi.service;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -18,6 +21,7 @@ import com.sms.scoreboardapi.domain.PlayerContestPerformance;
 import com.sms.scoreboardapi.domain.PlayerMatchPerformance;
 import com.sms.scoreboardapi.domain.Team;
 import com.sms.scoreboardapi.domain.TeamPerformance;
+import com.sms.scoreboardapi.domain.TeamsPlayerPerformanceReport;
 import com.sms.scoreboardapi.repository.MatchScoreRepository;
 import com.sms.scoreboardapi.repository.PlayerContestPerformanceRepository;
 import com.sms.scoreboardapi.repository.PlayerMatchPerformanceRepository;
@@ -150,7 +154,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		if(ballScore.getMatchStatus().equalsIgnoreCase("on-going")) {
 			battingMatchScore.setMatchStatus(ballScore.getMatchStatus());
 		}else if(ballScore.getMatchStatus().equalsIgnoreCase("batting team wins")) {
-			battingMatchScore.setMatchStatus("won");
+			battingMatchScore.setMatchStatus("win");
 		}else if(ballScore.getMatchStatus().equalsIgnoreCase("batting team looses")){
 			battingMatchScore.setMatchStatus("loss");
 		}else {
@@ -370,7 +374,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		//set data to batting team performance
 		battingTeamPerformance.setMatchesPlayed(matchScoreRepository.countByTeamId(battingTeam.getId()));
 		battingTeamPerformance.setLoss(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "loss"));
-		battingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "won"));
+		battingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "win"));
 		logger.debug("bating team points ------------------------------------>>>>>>>>>>>>"+battingTeamPerformance.getWin()*2+battingTeamPerformance.getNoResult());
 		battingTeamPerformance.setPoints((int)(battingTeamPerformance.getWin()*2+battingTeamPerformance.getNoResult()));
 		battingTeamPerformance.setNoResult(matchScoreRepository.countByTeamIdAndMatchStatus(battingTeam.getId(), "tied"));
@@ -378,7 +382,7 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		//set data to bowling Team
 		bowlingTeamPerformance.setMatchesPlayed(matchScoreRepository.countByTeamId(bowlingTeam.getId()));
 		bowlingTeamPerformance.setLoss(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "loss"));
-		bowlingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "won"));
+		bowlingTeamPerformance.setWin(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "win"));
 		logger.debug("bowling team points ------------------------------------>>>>>>>>>>>>"+bowlingTeamPerformance.getWin()*2+bowlingTeamPerformance.getNoResult());
 		bowlingTeamPerformance.setPoints(bowlingTeamPerformance.getWin()*2+bowlingTeamPerformance.getNoResult());
 		bowlingTeamPerformance.setNoResult(matchScoreRepository.countByTeamIdAndMatchStatus(bowlingTeam.getId(), "tied"));
@@ -447,7 +451,14 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		
 		logger.debug("service invoked for getting team performance");
 		
-		return teamPerformanceRepository.findByTeamId(teamId);
+		TeamPerformance teamPerformance= teamPerformanceRepository.findByTeamId(teamId);
+		if(teamPerformance==null) {
+			return null;
+		}else {
+			teamPerformance.setTeamName(teamRepository.findByid(teamPerformance.getTeam().getId()));
+			return teamPerformance;
+		}
+		
 	}
 
 	public Player getHighestScorer(Long contestId) {
@@ -468,5 +479,87 @@ public class ScoreBoardServiceImpl implements ScoreBoardService {
 		}
 	}
 	
+	//get all teams performance
+	public List<TeamPerformance> getAllTeamPerformance(){
+		
+		logger.debug("service invoked for getting all teams performance");
+		List<TeamPerformance> performances=teamPerformanceRepository.findAll();
+		performances.stream().forEach(per->{
+			per.setTeamName(teamRepository.findByid(per.getTeam().getId()));
+		});
+		
+		performances=performances.stream().sorted(Comparator.comparing(TeamPerformance::getPoints).reversed()).collect(Collectors.toList());
+		performances.forEach(per->{
+			logger.debug("points----------->"+per.getPoints());
+		});
+		return performances;
+	}
 	
+	//get teams match performance
+	public MatchScore getTeamMatchPerformance(Long teamId,Long scheduleId) {
+		battingMatchScore=null;
+		optBatMatchScore=matchScoreRepository.findByTeamIdAndScheduleId(teamId,scheduleId);
+		if(optBatMatchScore.isPresent()) {
+			battingMatchScore=optBatMatchScore.get();
+		}
+		return battingMatchScore;
+	}
+	
+	//get player report card
+	public Set<TeamsPlayerPerformanceReport> getTeamsPlayerPerformanceReport(Long teamId,Long contestId) {
+		
+		logger.debug("service invoked to get report card");
+		
+		Team team=null;
+		
+		final Set<TeamsPlayerPerformanceReport> reports=new HashSet<TeamsPlayerPerformanceReport>();
+		
+		//get all the players of the team
+		Optional<Team> optTeam=teamRepository.findById(teamId);
+		
+		if(optTeam.isPresent()) {
+			team=optTeam.get();
+			logger.debug("got team object");
+		}
+		Set<Player> players=team.getPlayers();
+		logger.debug("got players");
+		players.stream().forEach(pl->{
+			PlayerContestPerformance playerContestPerformance=playerContestPerformanceRepository.findByPlayerIdAndContestId(pl.getId(), contestId);
+			logger.debug("got player contest performance---------------->"+playerContestPerformance);
+			TeamsPlayerPerformanceReport report= new TeamsPlayerPerformanceReport();
+			report.setPlayerName(pl.getPlayerName());
+			if(playerContestPerformance!=null) {
+				report.setRunsScored(playerContestPerformance.getRunsScored());
+				report.setWickets(playerContestPerformance.getWickets());
+				reports.add(report);
+			}else {
+				report.setRunsScored(0);
+				report.setWickets(0);
+				reports.add(report);
+			}
+			
+		});
+		logger.debug("created and initialized report and returning");
+		return reports;
+	}
+
+	@Override
+	public Set<PlayerMatchPerformance> getPlayerEachMatchPerformanceReport(Long playerId) {
+		
+		logger.debug("service invoked for getting players each match performance report");
+		
+		Optional<Player> optPlayer=null;
+		Player player=null;
+		
+		optPlayer=playerRepository.findById(playerId);
+		if(optPlayer.isPresent()) {
+			player=optPlayer.get();
+		}
+		final String playerName=player.getPlayerName();
+		Set<PlayerMatchPerformance> matchReport=playerMatchPerformanceRepository.findByPlayerId(playerId);
+		
+		matchReport.stream().forEach(rep->rep.setPlayerName(playerName));
+		return matchReport;
+		
+	}
 }

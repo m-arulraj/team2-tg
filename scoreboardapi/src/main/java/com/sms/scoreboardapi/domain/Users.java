@@ -13,11 +13,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.StringIdGenerator.class,
         property="id")
-public class User {
+public class Users {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class User {
 	private Boolean enabled;
 	
 	@OneToOne(mappedBy="user",fetch=FetchType.EAGER)
-	private UserRole role;
+	private Authorities role;
 
 	public Long getId() {
 		return id;
@@ -107,11 +107,11 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public UserRole getRole() {
+	public Authorities getRole() {
 		return role;
 	}
 
-	public void setRole(UserRole role) {
+	public void setRole(Authorities role) {
 		this.role = role;
 	}
 }

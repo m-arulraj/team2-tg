@@ -42,7 +42,7 @@ public class Team {
 	
 	@OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="team_manager_id")	
-	private User manager;
+	private Users manager;
 	
 	@OneToMany(mappedBy="team",fetch=FetchType.EAGER)
     private Set<Player> players;
@@ -71,10 +71,10 @@ public class Team {
 	public void setContest(Contest contest) {
 		this.contest = contest;
 	}
-	public User getManager() {
+	public Users getManager() {
 		return manager;
 	}
-	public void setManager(User manager) {
+	public void setManager(Users manager) {
 		this.manager = manager;
 	}
 	public Set<Player> getPlayers() {

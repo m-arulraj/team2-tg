@@ -12,8 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user_role")
-public class UserRole {
+@Table(name="authorities")
+public class Authorities {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -24,5 +24,5 @@ public class UserRole {
 	
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id")
-	private User user;
+	private Users user;
 }

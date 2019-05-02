@@ -1,6 +1,7 @@
 package com.sms.scoreboardapi.repository;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,5 @@ public interface PlayerMatchPerformanceRepository extends JpaRepository<PlayerMa
 	public int countByPlayerId(Long playerId);
 	
 	public PlayerMatchPerformance findByPlayerIdAndScheduleId(Long playerId, Long scheduleId);
+	public Set<PlayerMatchPerformance> findByPlayerId(Long playerId);
 }
