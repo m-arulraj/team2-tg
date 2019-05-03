@@ -51,7 +51,9 @@ public class TeamResources {
 
 	@GetMapping("")
 	public List<Team> getteamList() {
-		return teamService.getteamlist();
+		List<Team> teamList = teamService.getteamlist();
+		List<Team> sortedTeamList = teamList.stream().sorted(Comparator.comparing(Team::getTeamName)).collect(Collectors.toList());
+		return sortedTeamList;
 	}
 
 	@GetMapping("/Team-Player")
