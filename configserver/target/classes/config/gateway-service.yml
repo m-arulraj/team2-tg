@@ -27,8 +27,8 @@ spring:
         predicates:
         - Path= /api/user/**
          
-      - id: teamManagement-service
-        uri: lb://teamManagement-service
+      - id: teammanagement-service
+        uri: lb://teammanagement-service
         predicates:
         - Path= /api/team/**
         
