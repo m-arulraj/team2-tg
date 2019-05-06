@@ -85,7 +85,8 @@ public class TeamResources {
 		List<Team> serchedTeams =teamList.stream().
 				filter(t->(t.getTeamName().contains(search)||t.getTeamName().contains(search.toUpperCase())||t.getTeamName().contains(search.toLowerCase()))).
 				collect(Collectors.toList());
-		return serchedTeams;
+		List<Team> searchedSortedTeamList = serchedTeams.stream().sorted(Comparator.comparing(Team::getTeamName)).collect(Collectors.toList());
+		return searchedSortedTeamList;
 	}
 	@GetMapping("/sorted")
 	public List<Team> getSortedTeams() {
